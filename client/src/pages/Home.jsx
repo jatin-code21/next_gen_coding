@@ -1,10 +1,49 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useAuth0 } from "@auth0/auth0-react";
+import Navbar from '../components/Navbar'
+import axios from 'axios'
+const api = axios.create({
+  baseURL: 'http://localhost:8000',
+})
 
 const Home = () => {
+  const { user, isAuthenticated } = useAuth0();
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const userData = {
+        sub: user.sub,
+        email: user.email,
+        name: user.name
+      }
+
+      console.log('isAunthenticated', isAuthenticated);
+      console.log('User', user);
+      console.log('UserData', userData);
+
+      async function storeData() {
+        try {
+          const response = await api.post('/api/users/login', userData)
+          console.log('User data has been saved successfully', response.data);
+
+        } catch (error) {
+          alert('Not able to store the data');
+          console.error('Error storing the user Data', error);
+        }
+      }
+      storeData();
+    }
+  }, [isAuthenticated, user]);
   return (
-   <>
-    <h1>This is home page</h1>
-   </>
+    <>
+      <Navbar/>
+      {!isAuthenticated ? (
+          <div>
+            <h1>Not loggedIn</h1>
+          </div>
+      ): (
+        <h2>Logged IN</h2>
+      )}
+    </>
   )
 }
 
