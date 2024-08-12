@@ -12,7 +12,7 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use('/api/users', userRoutes);
 app.use('/api/submissions', submissionRoutes);
-
+app.use('/api/problems', problemRoutes)
 // app.use('/api/auth', authRoutes);
 // app.use('/api/problems', problemRoutes);
 // app.use('/api/submissions', submissionRoutes);

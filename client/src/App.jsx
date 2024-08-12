@@ -8,6 +8,7 @@ import Activities from './pages/Activities.jsx'
 import About from './pages/About.jsx'
 import Leadboard from './pages/Leadboard.jsx'
 import Profile from './pages/Profile.jsx'
+import ProblemPage from './pages/ProblemPage.jsx'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
           <Route index element={<Home/>}></Route>
           <Route path='/home' element={<Home/>}></Route>
           <Route path='/problems' element={<ProblemList/>}></Route>
+          <Route path='/problems/:problemName/:problemId' element={<ProblemPage/>}></Route>
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/about' element={<About/>}></Route>
           <Route path='/activities' element={<Activities/>}></Route>
