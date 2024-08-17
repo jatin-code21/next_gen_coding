@@ -21,8 +21,8 @@ const CodeEditor = ({ code, setCode, language, setLanguage }) => {
         setDecodedCode(atob(encodedCode));
     }
     console.log("The code is:", code);
-    console.log("The Encoded code:", encodedCode);
-    console.log("The Decoded code:", decodedCode);
+    // console.log("The Encoded code:", encodedCode);
+    // console.log("The Decoded code:", decodedCode);
     return (
         <>
             <EditorContainer>

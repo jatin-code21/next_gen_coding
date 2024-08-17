@@ -16,6 +16,8 @@ const Button = styled.button`
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s;
+  opacity: ${props => props.disabled ? 0.5 : 1};
+  pointer-events: ${props => props.disabled ? 'none' : 'auto'};
 
   &:hover {
     opacity: 0.8;
@@ -32,12 +34,12 @@ const SubmitButton = styled(Button)`
   color: white;
 `;
 
-const RunSubmitButtons = ({onRun, onSubmit}) => {
+const RunSubmitButtons = ({onRun, onSubmit, isRunning}) => {
     return (
         <>
             <ButtonContainer>
-                <RunButton onClick={onRun}>Run</RunButton>
-                <SubmitButton onClick={onSubmit}>Submit</SubmitButton>
+                <RunButton onClick={onRun} disabled={isRunning}>{isRunning ? 'Running...' : 'Run'}</RunButton>
+                <SubmitButton onClick={onSubmit} disabled={isRunning}>Submit</SubmitButton>
             </ButtonContainer>
         </>
     )
