@@ -20,4 +20,17 @@ const createUser = async (req, res) => {
     }
 }
 
-module.exports = {createUser};
+const getCurrentUser = async (req, res) => {
+    const {auth0Id} = req.params;
+    try{
+        const user = await User.findOne({sub: auth0Id});
+        if (!user){
+            return res.status(404).json({message: 'User not found'});
+        }
+        res.json(user);
+    } catch (error){
+        res.status(500).json({message: 'Server Error', error});
+    }
+}
+
+module.exports = {createUser, getCurrentUser};

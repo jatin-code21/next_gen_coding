@@ -29,10 +29,6 @@ const SubmissionSchema = new mongoose.Schema({
     enum: ['PENDING', 'ACCEPTED', 'REJECTED'], 
     default: 'PENDING' 
   },
-  results: [{
-    passed: Boolean,
-    isHidden: Boolean
-  }]
 }, { timestamps: true });
 
 SubmissionSchema.plugin(AutoIncrement, { inc_field: 'submissionId' });
