@@ -137,6 +137,8 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
+        localStorage.clear();
+        sessionStorage.clear();
         logout({ returnTo: window.location.origin });
     };
 

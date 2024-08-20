@@ -9,6 +9,7 @@ import RunSubmitButtons from '../components/RunSubmitButtons';
 import Navbar from '../components/Navbar';
 import TestCaseResults from '../components/TestCaseResults';
 import SuccessModal from '../components/SuccessModal';
+import OptimizationModal from '../components/OptimizationModal';
 
 const api = axios.create({
     baseURL: 'http://localhost:8000',
@@ -50,6 +51,7 @@ const ResultsPanel = styled.div`
 // `;
 
 const ProblemPage = () => {
+    const { getAccessTokenSilently } = useAuth0();
     const { problemId } = useParams();
     const [problem, setProblem] = useState(null);
     const [code, setCode] = useState('');
@@ -58,6 +60,8 @@ const ProblemPage = () => {
     const [isRunning, setIsRunning] = useState(false);
     const [showCaseModal, setShowCaseModal] = useState(false);
     const [mongoUser, setMongoUser] = useState(null);
+    const [optimizationSuggestions, setOptimizationSuggestions] = useState([]);
+    const [showOptimizationModal, setShowOptimizationModal] = useState(false);
 
     console.log('Problem id is:', problemId);
 
@@ -202,6 +206,7 @@ const ProblemPage = () => {
     const handleSubmitCode = async () => {
         console.log('Submitting code...');
         setIsRunning(true);
+        const token = await getAccessTokenSilently();
         const testCases = problem.testCases;
         // const visibleTestCases = problem.testCases.filter(testCase => !testCase.isHidden);
         setTestResults(testCases.map(() => ({ status: 'Running' })));
@@ -230,6 +235,20 @@ const ProblemPage = () => {
             const encodedCode = btoa(code);
             const res = await api.post('/api/submissions/submit', { user: mongoUser, problemId, code: encodedCode, language, status: allPassed ? 'ACCEPTED' : 'REJECTED' });
             console.log('Successfully saved', res);
+
+            if (allPassed) {
+                const analysisResponse = await api.post('/api/submissions/analyze', {
+                    submissionId: res.data.submission.submissionId,
+                    code: encodedCode,
+                    language,
+                    user: res.data.submission.user
+                })
+
+                if (analysisResponse.data.canBeOptimized) {
+                    setOptimizationSuggestions(analysisResponse.data.suggestions);
+                    setShowOptimizationModal(true);
+                }
+            }
         } catch (error) {
             console.error('Error running the test cases:', error);
         } finally {
@@ -272,6 +291,11 @@ const ProblemPage = () => {
                 </RightPanel>
             </PageContainer>
             {showCaseModal && <SuccessModal onClose={closeSuccessModal} />}
+            <OptimizationModal
+                isOpen={showOptimizationModal}
+                onClose={() => setShowOptimizationModal(false)}
+                suggestions={optimizationSuggestions}
+            />
         </>
     )
 }

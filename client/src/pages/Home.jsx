@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from '../components/Navbar'
 import axios from 'axios'
+import ProblemsToTry from '../components/ProblemsToTry';
 const api = axios.create({
   baseURL: 'http://localhost:8000',
 })
@@ -36,13 +37,7 @@ const Home = () => {
   return (
     <>
       <Navbar/>
-      {!isAuthenticated ? (
-          <div>
-            <h1>Not loggedIn</h1>
-          </div>
-      ): (
-        <h2>Logged IN</h2>
-      )}
+      <ProblemsToTry/>
     </>
   )
 }

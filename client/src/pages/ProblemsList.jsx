@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import axios from 'axios'
+import { useAuth0 } from '@auth0/auth0-react';
 const api = axios.create({
   baseURL: 'http://localhost:8000',
 })
@@ -37,19 +38,58 @@ const SolveButton = styled(Link)`
   }
 `;
 
+const SolvedIcon = styled.span`
+  color: #2ecc71;
+  font-size: 1.5em; /* Increased font size */
+  font-weight: bold; /* Made the tick bolder */
+  margin-left: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  border: 2px solid #2ecc71; /* Optional: Adds a border to highlight the tick */
+`;
+
 const ProblemsList = () => {
   const [problems, setProblems] = useState([]);
+  const [solvedProblems, setSolvedProblems] = useState({});
+  const { getAccessTokenSilently, user } = useAuth0();
   useEffect(() => {
-    const fetchProblems = async () => {
+    const fetchData = async () => {
       try {
-        const response = await api.get('/api/problems/getAllProblems');
-        setProblems(response.data);
+        const token = await getAccessTokenSilently();
+        console.log('The token is', token);
+        const [problemsResponse, solvedResponse] = await Promise.all([
+          api.get('/api/problems/getAllProblems', {
+            headers: { Authorization: `Bearer ${token}` }
+          }),
+          api.get('/api/submissions/solved', {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        ]);
+
+        setProblems(problemsResponse.data);
+        // console.log('The problem Response is', problemsResponse.data);
+        console.log('Solved response is', solvedResponse.data.solvedProblems);
+  
+        // Convert the array of solved problems into an object for easier lookup
+        const solvedMap = solvedResponse.data.solvedProblems.reduce((acc, _id) => {
+          acc[_id] = true;
+          return acc;
+        }, {});
+        setSolvedProblems(solvedMap);
+        console.log(solvedProblems);
       } catch (error) {
-        console.error('Error fetching the problem', error);
+        console.error('Error fetching data', error);
       }
+    };
+
+    if (user) {
+      fetchData();
     }
-    fetchProblems();
-  }, []);
+  }, [getAccessTokenSilently, user]);
   return (
     <>
       <Navbar />
@@ -61,9 +101,12 @@ const ProblemsList = () => {
               <h3>{problem.title}</h3>
               <p>Difficulty: {problem.difficulty}</p>
             </div>
-            <SolveButton to={`/problems/${problem.title.toLowerCase().replace(/\s+/g, '-')}/${problem.problemId}`}>
-              Solve
-            </SolveButton>
+            <div>
+              <SolveButton to={`/problems/${problem.title.toLowerCase().replace(/\s+/g, '-')}/${problem.problemId}`}>
+                Solve
+              </SolveButton>
+              {solvedProblems[problem._id] && <SolvedIcon>✓</SolvedIcon>}
+            </div>
           </ProblemItem>
         ))}
       </ProblemListContainer>
