@@ -1,8 +1,8 @@
 const Submission = require('../models/Submission');
 const Problem = require('../models/Problem');
 const User = require('../models/User')
+const { analyzeCode } = require('../services/aiServices')
 const judge0service = require('../services/judge0service');
-const webhookUtils = require('../utils/webhookUtils')
 
 const createSubmission = async (req, res) => {
     const { user, problemId, code, language, status } = req.body; // fron client only probelemId needs to be send so that using id we can fetch the problem
@@ -15,7 +15,7 @@ const createSubmission = async (req, res) => {
     try {
         const submission = new Submission({ user, problem, problemId, code, language, status });
         await submission.save();
-        return res.status(200).json({submission});
+        return res.status(200).json({ submission });
     } catch (error) {
         res.status(500).json({ error: 'Error saving the submission', error });
     }
@@ -71,4 +71,53 @@ const getSubmissionById = async (req, res) => {
     }
 }
 
-module.exports = { createSubmission, getSubmissionById }
+const analyzeSubmission = async (req, res) => {
+    const { submissionId, code, language, user } = req.body; // from frontend this data would be passed
+
+    if (!submissionId || !code || !language) {
+        res.status(400).json({ message: 'Missing required Submission' });
+    }
+
+    try {
+        // verifying the submission exists and belongs to the user
+        const submission = await Submission.findOne({ submissionId, user});
+        if (!submission) {
+            return res.status(400).json({ message: 'Submission not found or not authorized' });
+        }
+
+        // decoding the code
+        const decodedCode = Buffer.from(code, 'base64').toString('utf-8');
+
+        // analyzing the code
+        const analysis = await analyzeCode(decodedCode, language);
+
+        submission.aiAnalysis = analysis;
+        await submission.save();
+
+        res.json(analysis);
+    } catch (error) {
+        console.error('Error analyzing the submission', error);
+        res.status(500).json({ message: 'Error analyzing the message', error: error.message })
+    }
+}
+
+const getSolvedProblems = async (req, res) => {
+    // console.log('The sub is:', req.auth.sub);
+    // console.log(req.headers.authorization.split(' ')[1]);
+    try{
+        const user = await User.findOne({sub: req.auth.sub});
+        if (!user){
+            res.status(404).json({message: 'User not found'});
+        }
+        const solvedProblems = await Submission.distinct('problem', {
+            user: user._id, // checking for the mongodb id
+            status: "ACCEPTED",
+        });
+        // console.log(solvedProblems);
+        res.json({solvedProblems});
+    } catch (error) {
+        res.status(500).json({message: 'Error Fetching the solved Problem', error: error.message});
+    }
+};
+
+module.exports = { createSubmission, getSubmissionById, analyzeSubmission, getSolvedProblems}

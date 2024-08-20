@@ -6,7 +6,7 @@ const createUser = async (req, res) => {
     // console.log('User requested',req.user);
     const {sub, email, name} = req.body; // here sub means the subject whcih is basically the unique id for the user
     try{
-        const checkUser = await User.findOne({email});
+        const checkUser = await User.findOne({sub});
         if (checkUser)
         {
             return res.status(200).json({message: 'User already exist in the database'})
@@ -16,6 +16,7 @@ const createUser = async (req, res) => {
         await user.save();
         return res.status(200).json(user);
     } catch (error){
+        // console.error('Error creating the user', error.stack || error);
         res.status(500).json({error: 'Error in creating the user'});
     }
 }

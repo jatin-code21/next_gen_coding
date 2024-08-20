@@ -10,7 +10,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       domain="dev-1kxktm1vmfs66y7l.us.auth0.com"
       clientId="vpzL72JtkwyC3RSIRNJDDIRKz6kGqUwV"
       authorizationParams={{
-        redirect_uri: window.location.origin
+        redirect_uri: window.location.origin,
+        audience: "nextgencoding",
+        scope: "openid profile email"
       }}
       cacheLocation="localstorage"
     >
