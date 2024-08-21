@@ -1,40 +1,43 @@
 const OpenAI = require('openai')
-const openai = new OpenAI({
-    apiKey: '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'
+const Groq = require('groq-sdk')
+const openai = new Groq({
+    apiKey: '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'
 });
 
-const parseSuggestions = (analysis) => {
-    const lines = analysis.split('\n');
-    const suggestions = [];
-    let currentSuggestion = null;
+const isNumeric = (string) => /^[+-]?\d+(\.\d+)?$/.test(string)
 
-    for (const line of lines) {
-        if (line.startsWith('Line')) {
-            if (currentSuggestion) {
-                suggestions.push(currentSuggestion);
-            }
-            const [lineInfo, ...messageParts] = line.split(':');
-            
-            currentSuggestion = {
-                line: parseInt(lineInfo.split(' ')[1]),
-                message: messageParts.join(':').trim(),
-                suggestion: ''
-            };
-        }else if (currentSuggestion) {
-            currentSuggestion.suggestion += line + '\n';
-        }
-    }
+// const parseSuggestions = (analysis) => {
+//     const lines = analysis.split('\n');
+//     const suggestions = [];
+//     let currentSuggestion = null;
 
-    if (currentSuggestion){
-        suggestions.push(currentSuggestion);
-    }
+//     for (const line of lines) {
+//         if (line.startsWith(isNumeric(line[0]))) {
+//             if (currentSuggestion) {
+//                 suggestions.push(currentSuggestion);
+//             }
+//             const [lineInfo, ...messageParts] = line.split(':');
 
-    return suggestions;
-}
+//             currentSuggestion = {
+//                 line: parseInt(lineInfo.split(' ')[1]),
+//                 message: messageParts.join(':').trim(),
+//                 suggestion: ''
+//             };
+//         }else if (currentSuggestion) {
+//             currentSuggestion.suggestion += line + '\n';
+//         }
+//     }
+
+//     if (currentSuggestion){
+//         suggestions.push(currentSuggestion);
+//     }
+
+//     return suggestions;
+// }
 const analyzeCode = async (code, language) => {
     try {
         const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
+            model: "llama3-8b-8192",
             messages: [
                 {
                     role: 'system',
@@ -45,15 +48,18 @@ const analyzeCode = async (code, language) => {
                     content: `Analyze this ${language} code and provide optimization suggestions:\n\n${code}`
                 }
             ],
-            max_tokens: 500 
+            max_tokens: 500
         });
-
-        const analysis = response.choices[0].messages.content;
-        const canBeOptimized = analysis.toLowerCase().includes('can be optimised');
-
+        console.log('Response from ai', response.choices[0].message.content);
+        const analysis = response.choices[0].message.content;
+        const canBeOptimized = analysis.toLowerCase().includes('1.');
+        const suggestions = analysis
+            .split('\n') // Splitting content by new lines
+            .filter(line => line.startsWith('1.') || line.startsWith('2.') || line.startsWith('3.')) // Keeping only suggestion lines
+        console.log("Suggestions:", suggestions);
         return {
             canBeOptimized,
-            suggestions: parseSuggestions(analysis)
+            suggestions
         }
     } catch (error) {
         console.error('Error analyzing the code with AI', error);
