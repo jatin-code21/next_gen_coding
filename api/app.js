@@ -4,6 +4,7 @@ const authRoutes = require('./routes/authRoutes')
 const problemRoutes = require('./routes/problemRoutes');
 const submissionRoutes = require('./routes/submissionRoutes');
 const userRoutes = require('./routes/userRoutes')
+const feedbackRoutes = require('./routes/feedbackRoutes')
 const cors = require('cors')
 
 const app = express()
@@ -13,6 +14,7 @@ app.use(bodyParser.json())
 app.use('/api/users', userRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/problems', problemRoutes)
+app.use('/api/feedback', feedbackRoutes)
 // app.use('/api/auth', authRoutes);
 // app.use('/api/problems', problemRoutes);
 // app.use('/api/submissions', submissionRoutes);

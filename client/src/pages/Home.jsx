@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from '../components/Navbar'
 import axios from 'axios'
 import ProblemsToTry from '../components/ProblemsToTry';
+import Footer from '../components/Footer';
 const api = axios.create({
   baseURL: 'http://localhost:8000',
 })
@@ -36,8 +37,9 @@ const Home = () => {
   }, [isAuthenticated, user]);
   return (
     <>
-      <Navbar/>
-      <ProblemsToTry/>
+      <Navbar />
+      <ProblemsToTry />
+      <Footer />
     </>
   )
 }

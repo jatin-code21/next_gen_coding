@@ -115,7 +115,7 @@ const ProblemPage = () => {
                 fields: '*'
             },
             headers: {
-                'x-rapidapi-key': 'af34b7c163msheb6c2bee3915e36p19084fjsncd3d119e4e43',
+                'x-rapidapi-key': '2ce9d5970cmsh08984c35b4f4c34p1e1b8ejsn38b45ef1857a',
                 'x-rapidapi-host': 'judge0-ce.p.rapidapi.com'
             }
         };
@@ -145,7 +145,7 @@ const ProblemPage = () => {
                 fields: '*'
             },
             headers: {
-                'x-rapidapi-key': 'af34b7c163msheb6c2bee3915e36p19084fjsncd3d119e4e43',
+                'x-rapidapi-key': '2ce9d5970cmsh08984c35b4f4c34p1e1b8ejsn38b45ef1857a',
                 'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
                 'Content-Type': 'application/json'
             },
@@ -234,7 +234,7 @@ const ProblemPage = () => {
             }
             const encodedCode = btoa(code);
             const res = await api.post('/api/submissions/submit', { user: mongoUser, problemId, code: encodedCode, language, status: allPassed ? 'ACCEPTED' : 'REJECTED' });
-            console.log('Successfully saved', res);
+            console.log('Successfully saved submission', res);
 
             if (allPassed) {
                 const analysisResponse = await api.post('/api/submissions/analyze', {
@@ -243,7 +243,7 @@ const ProblemPage = () => {
                     language,
                     user: res.data.submission.user
                 })
-
+                console.log('Analysis Respone', analysisResponse);
                 if (analysisResponse.data.canBeOptimized) {
                     setOptimizationSuggestions(analysisResponse.data.suggestions);
                     setShowOptimizationModal(true);
