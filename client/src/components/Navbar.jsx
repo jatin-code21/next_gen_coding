@@ -148,7 +148,7 @@ const Navbar = () => {
                 <Logo to="/">Next Gen Coding</Logo>
                 <NavLinks>
                     <NavLink to="/about">About</NavLink>
-                    <NavLink to="/activity">Activity</NavLink>
+                    <NavLink to="/activities">Activity</NavLink>
                     <NavLink to="/problems">Problems</NavLink>
                     <NavLink to="/leaderboard">Leaderboard</NavLink>
                     {isAuthenticated ? (
@@ -168,7 +168,7 @@ const Navbar = () => {
             </NavContainer>
             <MobileMenu isopen={isopen}>
                 <MobileNavLink to="/about" onClick={toggleMenu}>About</MobileNavLink>
-                <MobileNavLink to="/activity" onClick={toggleMenu}>Activity</MobileNavLink>
+                <MobileNavLink to="/activities" onClick={toggleMenu}>Activity</MobileNavLink>
                 <MobileNavLink to="/problems" onClick={toggleMenu}>Problems</MobileNavLink>
                 <MobileNavLink to="/leaderboard" onClick={toggleMenu}>Leaderboard</MobileNavLink>
                 {isAuthenticated ? (

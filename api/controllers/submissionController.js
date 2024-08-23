@@ -120,4 +120,15 @@ const getSolvedProblems = async (req, res) => {
     }
 };
 
-module.exports = { createSubmission, getSubmissionById, analyzeSubmission, getSolvedProblems}
+const getLatestSubmissions = async (req, res) => {
+    try{
+        const submissions = await Submission.find().sort({createdAt: -1}).limit(15).populate('problem', 'title').populate('user', 'name');
+        console.log(submissions);
+        res.json(submissions);
+    } catch (error){
+        console.error('Error fetching the recent submissions:', error);
+        res.status(500).json({message: 'Error fetching the recent submisisons'});
+    }
+}
+
+module.exports = { createSubmission, getSubmissionById, analyzeSubmission, getSolvedProblems, getLatestSubmissions}

@@ -9,6 +9,7 @@ import About from './pages/About.jsx'
 import Leadboard from './pages/Leadboard.jsx'
 import Profile from './pages/Profile.jsx'
 import ProblemPage from './pages/ProblemPage.jsx'
+import ComingSoonPage from './pages/ComingSoonPage.jsx'
 
 function App() {
 
@@ -20,10 +21,10 @@ function App() {
           <Route path='/home' element={<Home/>}></Route>
           <Route path='/problems' element={<ProblemList/>}></Route>
           <Route path='/problems/:problemName/:problemId' element={<ProblemPage/>}></Route>
-          <Route path='/login' element={<Login/>}></Route>
-          <Route path='/about' element={<About/>}></Route>
+          <Route path='/login' element={<Login/>}></Route>  
+          <Route path='/about' element={<ComingSoonPage/>}></Route>
           <Route path='/activities' element={<Activities/>}></Route>
-          <Route path='/leaderboard' element={<Leadboard/>}></Route>
+          <Route path='/leaderboard' element={<ComingSoonPage/>}></Route>
           <Route path='/profile' element={<Profile/>}></Route>
         </Routes>
       </BrowserRouter>

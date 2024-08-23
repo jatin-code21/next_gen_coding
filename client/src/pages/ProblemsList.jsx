@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import axios from 'axios'
 import { useAuth0 } from '@auth0/auth0-react';
+// import dotenv from 'dotenv';
+// dotenv.config();
+
 const api = axios.create({
   baseURL: 'http://localhost:8000',
 })
@@ -55,7 +58,10 @@ const SolvedIcon = styled.span`
 const ProblemsList = () => {
   const [problems, setProblems] = useState([]);
   const [solvedProblems, setSolvedProblems] = useState({});
-  const { getAccessTokenSilently, user } = useAuth0();
+  const [alertShown, setAlertShown] = useState(false);
+  const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -73,7 +79,7 @@ const ProblemsList = () => {
         setProblems(problemsResponse.data);
         // console.log('The problem Response is', problemsResponse.data);
         console.log('Solved response is', solvedResponse.data.solvedProblems);
-  
+
         // Convert the array of solved problems into an object for easier lookup
         const solvedMap = solvedResponse.data.solvedProblems.reduce((acc, _id) => {
           acc[_id] = true;
