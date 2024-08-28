@@ -8,10 +8,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Auth0Provider
       domain="dev-1kxktm1vmfs66y7l.us.auth0.com"
-      clientId="vpzL72JtkwyC3RSIRNJDDIRKz6kGqUwV"
+      clientId={import.meta.env.VITE_AUTHO_CLIENTID}
       authorizationParams={{
         redirect_uri: window.location.origin,
-        audience: "nextgencoding",
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE,
         scope: "openid profile email"
       }}
       cacheLocation="localstorage"

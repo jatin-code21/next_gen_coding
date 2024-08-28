@@ -5,7 +5,7 @@ import axios from 'axios'
 import ProblemsToTry from '../components/ProblemsToTry';
 import Footer from '../components/Footer';
 const api = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_BASE_URL,
 })
 
 const Home = () => {

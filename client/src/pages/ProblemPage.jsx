@@ -12,7 +12,7 @@ import SuccessModal from '../components/SuccessModal';
 import OptimizationModal from '../components/OptimizationModal';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: import.meta.env.VITE_BASE_URL,
 })
 
 const PageContainer = styled.div`
