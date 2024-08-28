@@ -1,6 +1,7 @@
 const jwksRsa = require('jwks-rsa');
 const express = require('express')
 const { expressjwt: jwt } = require('express-jwt');
+const dotenv = require('dotenv').config();
 
 // Middleware to validate the JWT and extract the user info
 const checkJwt = jwt({
@@ -9,12 +10,12 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: 'https://dev-1kxktm1vmfs66y7l.us.auth0.com/.well-known/jwks.json', // Replace with your Auth0 domain 
+    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
   }),
 
   // Validate the audience and the issuer
-  audience: 'nextgencoding', // Replace with your API identifier
-  issuer: `https://dev-1kxktm1vmfs66y7l.us.auth0.com/`, // Replace with your Auth0 domain
+  audience: process.env.AUTH0_AUDIENCE,
+  issuer: `https://${process.env.AUTH0_DOMAIN}/`, 
   algorithms: ['RS256'], 
 });
 

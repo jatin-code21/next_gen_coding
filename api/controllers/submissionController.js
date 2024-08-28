@@ -2,7 +2,7 @@ const Submission = require('../models/Submission');
 const Problem = require('../models/Problem');
 const User = require('../models/User')
 const { analyzeCode } = require('../services/aiServices')
-const judge0service = require('../services/judge0service');
+
 
 const createSubmission = async (req, res) => {
     const { user, problemId, code, language, status } = req.body; // fron client only probelemId needs to be send so that using id we can fetch the problem
@@ -123,7 +123,7 @@ const getSolvedProblems = async (req, res) => {
 const getLatestSubmissions = async (req, res) => {
     try{
         const submissions = await Submission.find().sort({createdAt: -1}).limit(15).populate('problem', 'title').populate('user', 'name');
-        console.log(submissions);
+        // console.log(submissions);
         res.json(submissions);
     } catch (error){
         console.error('Error fetching the recent submissions:', error);

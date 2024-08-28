@@ -4,7 +4,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: import.meta.env.VITE_BASE_URL,
 })
 
 const ProblemListContainer = styled.div`

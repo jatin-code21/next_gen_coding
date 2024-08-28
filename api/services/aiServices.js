@@ -1,8 +1,12 @@
 const OpenAI = require('openai')
 const Groq = require('groq-sdk')
+const dotenv = require('dotenv').config();
 const openai = new Groq({
-    apiKey: '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'
+    apiKey: process.env.GROQ_API_KEY,
 });
+// const openai = new Groq({
+//     apiKey: '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'
+// });
 
 const isNumeric = (string) => /^[+-]?\d+(\.\d+)?$/.test(string)
 
@@ -52,6 +56,7 @@ const analyzeCode = async (code, language) => {
         });
         console.log('Response from ai', response.choices[0].message.content);
         const analysis = response.choices[0].message.content;
+        console.log(analysis);
         const canBeOptimized = analysis.toLowerCase().includes('1.');
         const suggestions = analysis
             .split('\n') // Splitting content by new lines

@@ -8,7 +8,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 // dotenv.config();
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_BASE_URL,
 })
 
 const ProblemListContainer = styled.div`
