@@ -1,12 +1,8 @@
-const OpenAI = require('openai')
 const Groq = require('groq-sdk')
 const dotenv = require('dotenv').config();
 const openai = new Groq({
     apiKey: process.env.GROQ_API_KEY,
 });
-// const openai = new Groq({
-//     apiKey: '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'
-// });
 
 const isNumeric = (string) => /^[+-]?\d+(\.\d+)?$/.test(string)
 
@@ -45,22 +41,35 @@ const analyzeCode = async (code, language) => {
             messages: [
                 {
                     role: 'system',
-                    content: "You are a code optimization expert. Analyze the given code and provide suggestions for optimization. Focus on effeciency, readability, and best practices."
+                    content: "You are a code analyzer expert. Analyze the given code and provide the time and space complexity of the code, suggest the optimization if there that can be done in the code time and space complexity wise, also highlight the part which is not necessary to include in the code and there could be a better way to do that."
                 },
                 {
                     role: "user",
-                    content: `Analyze this ${language} code and provide optimization suggestions:\n\n${code}`
+                    content: `Analyze this ${language} code and generate the report properly: ${code}`
                 }
             ],
-            max_tokens: 500
+            max_tokens: 400,
+            temperature: 0,
+            top_p: 1,
+            stop: null
         });
-        console.log('Response from ai', response.choices[0].message.content);
+        // console.log('Full response from AI:', response);
+        // if (!response || !response.choices || !response.choices[0] || !response.choices[0].message) {
+        //     throw new Error('Invalid response from AI');
+        // }
+        // console.log('Response from ai', response.choices[0]);
         const analysis = response.choices[0].message.content;
-        console.log(analysis);
-        const canBeOptimized = analysis.toLowerCase().includes('1.');
-        const suggestions = analysis
-            .split('\n') // Splitting content by new lines
-            .filter(line => line.startsWith('1.') || line.startsWith('2.') || line.startsWith('3.')) // Keeping only suggestion lines
+        // console.log("Analysis part", analysis);
+        const canBeOptimized = analysis.toLowerCase().includes('time complexity');
+        const timePart = analysis.match(/Time Complexity:[\s\S]*?(?=\n\n|$)/)?.[0] || '';
+        const spacePart = analysis.match(/Space Complexity:[\s\S]*?(?=\n\n|$)/)?.[0] || '';
+        const optimizationMatch = analysis.match(/Optimization Suggestions:([\s\S]*?)(?=\n\nCode Optimization:|\n\n(?!Optimization Suggestions:)|$)/);
+        const optimizationPart = optimizationMatch ? optimizationMatch[1].trim() : '';
+        const suggestions = [
+            timePart.trim(),
+            spacePart.trim(),
+            optimizationPart.trim()
+        ].filter(Boolean);
         console.log("Suggestions:", suggestions);
         return {
             canBeOptimized,

@@ -44,9 +44,9 @@ const OptimizationModal = ({ isOpen, onClose, suggestions }) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalContent>
-                <ModalHeader>Code Optimization Suggestions</ModalHeader>
+                <ModalHeader>Code Report</ModalHeader>
                 <ModalDescription>
-                    Your code has been accepted, but it could be optimized. Here are some suggestions to improve it:
+                    Your code has been accepted, and below is the detailed report generated for your code.
                 </ModalDescription>
                 {suggestions.map((suggestion, index) => (
                     <SuggestionItem key={index} suggestion={suggestion} />

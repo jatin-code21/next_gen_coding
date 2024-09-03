@@ -73,7 +73,7 @@ const getSubmissionById = async (req, res) => {
 
 const analyzeSubmission = async (req, res) => {
     const { submissionId, code, language, user } = req.body; // from frontend this data would be passed
-
+    // code passed is in encoded format
     if (!submissionId || !code || !language) {
         res.status(400).json({ message: 'Missing required Submission' });
     }
