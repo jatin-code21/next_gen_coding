@@ -166,7 +166,7 @@ const ProblemPage = () => {
                 status: result.status.id === 3 ? 'Passed' : 'Failed'
             };
         } catch (error) {
-            console.error('Could not run the testcase'.error);
+            console.error('Could not run the testcase', error);
             return {
                 index,
                 status: "Error"
