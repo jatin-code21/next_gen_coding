@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import Switch from '@mui/material/Switch';
+import { useProMode } from '../hooks/useProMode';
 
 const Nav = styled.nav`
   background: linear-gradient(to right, #2c3e50, #3498db);
@@ -124,64 +126,88 @@ const MobileNavLink = styled(NavLink)`
   }
 `;
 
+const ProModeSwitch = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+`;
+
 const Navbar = () => {
-    const [isopen, setisopen] = React.useState(false);
-    const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0();
+  const [isopen, setisopen] = React.useState(false);
+  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0();
+  const [isProMode, setIsProMode] = useProMode();
 
-    const toggleMenu = () => {
-        setisopen(!isopen);
-    };
+  const toggleMenu = () => {
+    setisopen(!isopen);
+  };
 
-    const handleLogin = () => {
-        loginWithRedirect();
-    };
+  const handleLogin = () => {
+    loginWithRedirect();
+  };
 
-    const handleLogout = () => {
-        localStorage.clear();
-        sessionStorage.clear();
-        logout({ returnTo: window.location.origin });
-    };
+  const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    logout({ returnTo: window.location.origin });
+  };
 
-    return (
-        <Nav>
-            <NavContainer>
-                <Logo to="/">Next Gen Coding</Logo>
-                <NavLinks>
-                    <NavLink to="/about">About</NavLink>
-                    <NavLink to="/activities">Activity</NavLink>
-                    <NavLink to="/problems">Problems</NavLink>
-                    <NavLink to="/leaderboard">Leaderboard</NavLink>
-                    {isAuthenticated ? (
-                        <UserProfile>
-                            <UserName to="/profile">{user.name}</UserName>
-                            <AuthButton onClick={handleLogout}>Logout</AuthButton>
-                        </UserProfile>
-                    ) : (
-                        <AuthButton onClick={handleLogin}>Login</AuthButton>
-                    )}
-                </NavLinks>
-                <HamburgerMenu onClick={toggleMenu}>
-                    <HamburgerLine />
-                    <HamburgerLine />
-                    <HamburgerLine />
-                </HamburgerMenu>
-            </NavContainer>
-            <MobileMenu isopen={isopen}>
-                <MobileNavLink to="/about" onClick={toggleMenu}>About</MobileNavLink>
-                <MobileNavLink to="/activities" onClick={toggleMenu}>Activity</MobileNavLink>
-                <MobileNavLink to="/problems" onClick={toggleMenu}>Problems</MobileNavLink>
-                <MobileNavLink to="/leaderboard" onClick={toggleMenu}>Leaderboard</MobileNavLink>
-                {isAuthenticated ? (
-                    <>
-                        <MobileNavLink as="span" onClick={toggleMenu}>{user.name}</MobileNavLink>
-                        <MobileNavLink as="button" onClick={() => { handleLogout(); toggleMenu(); }}>Logout</MobileNavLink>
-                    </>
-                ) : (
-                    <MobileNavLink as="button" onClick={() => { handleLogin(); toggleMenu(); }}>Login</MobileNavLink>
-                )}
-            </MobileMenu>
-        </Nav>
-    );
+  const handleProModeToggle = () => {
+    setIsProMode(!isProMode);
+
+    // setting this state to the localstorage as well (can store at the backend also)
+    localStorage.setItem('isProMode', !isProMode);
+  }
+
+  return (
+    <Nav>
+      <NavContainer>
+        <Logo to="/">Next Gen Coding</Logo>
+        <NavLinks>
+          <NavLink to="/about">About</NavLink>
+          <NavLink to="/activities">Activity</NavLink>
+          <NavLink to="/problems">Problems</NavLink>
+          <NavLink to="/leaderboard">Leaderboard</NavLink>
+          {isAuthenticated && (
+            <ProModeSwitch>
+              <span>Pro Mode</span>
+              <Switch
+                checked={isProMode}
+                onChange={handleProModeToggle}
+                color='secondary'
+              />
+            </ProModeSwitch>
+          )}
+          {isAuthenticated ? (
+            <UserProfile>
+              <UserName to="/profile">{user.name}</UserName>
+              <AuthButton onClick={handleLogout}>Logout</AuthButton>
+            </UserProfile>
+          ) : (
+            <AuthButton onClick={handleLogin}>Login</AuthButton>
+          )}
+        </NavLinks>
+        <HamburgerMenu onClick={toggleMenu}>
+          <HamburgerLine />
+          <HamburgerLine />
+          <HamburgerLine />
+        </HamburgerMenu>
+      </NavContainer>
+      <MobileMenu isopen={isopen}>
+        <MobileNavLink to="/about" onClick={toggleMenu}>About</MobileNavLink>
+        <MobileNavLink to="/activities" onClick={toggleMenu}>Activity</MobileNavLink>
+        <MobileNavLink to="/problems" onClick={toggleMenu}>Problems</MobileNavLink>
+        <MobileNavLink to="/leaderboard" onClick={toggleMenu}>Leaderboard</MobileNavLink>
+        {isAuthenticated ? (
+          <>
+            <MobileNavLink as="span" onClick={toggleMenu}>{user.name}</MobileNavLink>
+            <MobileNavLink as="button" onClick={() => { handleLogout(); toggleMenu(); }}>Logout</MobileNavLink>
+          </>
+        ) : (
+          <MobileNavLink as="button" onClick={() => { handleLogin(); toggleMenu(); }}>Login</MobileNavLink>
+        )}
+      </MobileMenu>
+    </Nav>
+  );
 };
 
 export default Navbar;
