@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const mongoose = require('mongoose')
+const dotenv = require('dotenv').config();
 
 const createUser = async (req, res) => {
     // console.log('User Body sent', req.body);
@@ -11,14 +12,14 @@ const createUser = async (req, res) => {
         {
             return res.status(200).json({message: 'User already exist in the database'})
         }
-        const webhookUrl = `http://localhost:5173/webhooks/${sub}`;
+        const webhookUrl = `${process.env.FRONTEND_URL}/webhooks/${sub}`;
         let user = new User({sub, email, name, webhookUrl});
         await user.save();
         return res.status(200).json(user);
     } catch (error){
         // console.error('Error creating the user', error.stack || error);
         res.status(500).json({error: 'Error in creating the user'});
-    }
+    } 
 }
 
 const getCurrentUser = async (req, res) => {
