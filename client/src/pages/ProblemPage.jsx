@@ -10,6 +10,8 @@ import Navbar from '../components/Navbar';
 import TestCaseResults from '../components/TestCaseResults';
 import SuccessModal from '../components/SuccessModal';
 import OptimizationModal from '../components/OptimizationModal';
+import { useProMode } from '../hooks/useProMode';
+import AIChat from '../components/AIChat';
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -62,6 +64,7 @@ const ProblemPage = () => {
     const [mongoUser, setMongoUser] = useState(null);
     const [optimizationSuggestions, setOptimizationSuggestions] = useState([]);
     const [showOptimizationModal, setShowOptimizationModal] = useState(false);
+    const [isProMode] = useProMode();
 
     console.log('Problem id is:', problemId);
 
@@ -270,6 +273,7 @@ const ProblemPage = () => {
             <PageContainer>
                 <LeftPanel>
                     <ProblemDetails problem={problem} />
+                    {isProMode && <AIChat problemId={problemId}/>}
                 </LeftPanel>
                 <RightPanel>
                     <CodeEditor
