@@ -30,6 +30,7 @@ app.use(cors({
 //     origin: "*"
 // }))
 app.use(bodyParser.json())
+app.get('/', (req, res) =>{res.send('Server is up and running')})
 app.use('/api/users', userRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/problems', problemRoutes)
