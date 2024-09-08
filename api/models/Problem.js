@@ -14,7 +14,8 @@ const problemSchema = new mongoose.Schema({
   outputFormat: { type: String, required: true },
   constraints: { type: String, required: true },
   difficulty: { type: String, enum: ['easy', 'medium', 'hard'], required: true },
-  testCases: [testCaseSchema]
+  testCases: [testCaseSchema],
+  realWorldUse: {type: String, require: true}
 }, {timestamps: true});
 
 problemSchema.plugin(Autoincrement, {inc_field: 'problemId'});
