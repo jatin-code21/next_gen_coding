@@ -10,25 +10,25 @@ const cors = require('cors')
 
 const app = express()
 
-const allowedOrigins = process.env.NODE_ENV === 'production'
-    ? ['https://next-gen-coding-hm43.vercel.app']
-    : ['http://localhost:5173'];
-
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    },
-    credentials: true,
-}));
+// const allowedOrigins = process.env.NODE_ENV === 'production'
+//     ? ['https://next-gen-coding-hm43.vercel.app']
+//     : ['http://localhost:5173'];
 
 // app.use(cors({
-//     origin: "*"
-// }))
+//     origin: function (origin, callback) {
+//         if (!origin) return callback(null, true);
+//         if (allowedOrigins.indexOf(origin) === -1) {
+//             var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+//             return callback(new Error(msg), false);
+//         }
+//         return callback(null, true);
+//     },
+//     credentials: true,
+// }));
+
+app.use(cors({
+    origin: "*"
+}))
 app.use(bodyParser.json())
 app.get('/', (req, res) =>{res.send('Server is up and running')})
 app.use('/api/users', userRoutes);
