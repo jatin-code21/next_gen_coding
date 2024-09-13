@@ -11,8 +11,9 @@ const Leadboard = lazy(() => import('./pages/Leadboard.jsx'))
 const Profile = lazy(() => import('./pages/Profile.jsx'))
 const ProblemPage = lazy(() => import('./pages/ProblemPage.jsx'))
 const ComingSoonPage = lazy(() => import('./pages/ComingSoonPage.jsx'))
+const ProFeatures = lazy(() => import('./pages/ProFeatures.jsx'))
 
-const Loading = () => <dive>Loading...</dive>
+const Loading = () => <div>Loading...</div>
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
             <Route path='/home' element={<Home />}></Route>
             <Route path='/problems' element={<ProblemList />}></Route>
             <Route path='/problems/:problemName/:problemId' element={<ProblemPage />}></Route>
+            <Route path="/pro-features" element={<ProFeatures />} />
             <Route path='/login' element={<Login />}></Route>
             <Route path='/about' element={<ComingSoonPage />}></Route>
             <Route path='/activities' element={<Activities />}></Route>

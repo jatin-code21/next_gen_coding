@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import axios from 'axios'
@@ -64,37 +64,44 @@ const ProblemsList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        console.log('The token is', token);
-        const [problemsResponse, solvedResponse] = await Promise.all([
-          api.get('/api/problems/getAllProblems', {
-            headers: { Authorization: `Bearer ${token}` }
-          }),
-          api.get('/api/submissions/solved', {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-        ]);
+      if (isAuthenticated) {
+        try {
+          const token = await getAccessTokenSilently();
+          console.log('The token is', token);
+          const [problemsResponse, solvedResponse] = await Promise.all([
+            api.get('/api/problems/getAllProblems', {
+              headers: { Authorization: `Bearer ${token}` }
+            }),
+            api.get('/api/submissions/solved', {
+              headers: { Authorization: `Bearer ${token}` }
+            })
+          ]);
 
-        setProblems(problemsResponse.data);
-        // console.log('The problem Response is', problemsResponse.data);
-        console.log('Solved response is', solvedResponse.data.solvedProblems);
+          setProblems(problemsResponse.data);
+          // console.log('The problem Response is', problemsResponse.data);
+          console.log('Solved response is', solvedResponse.data.solvedProblems);
 
-        // Convert the array of solved problems into an object for easier lookup
-        const solvedMap = solvedResponse.data.solvedProblems.reduce((acc, _id) => {
-          acc[_id] = true;
-          return acc;
-        }, {});
-        setSolvedProblems(solvedMap);
-        console.log(solvedProblems);
-      } catch (error) {
-        console.error('Error fetching data', error);
+          // Convert the array of solved problems into an object for easier lookup
+          const solvedMap = solvedResponse.data.solvedProblems.reduce((acc, _id) => {
+            acc[_id] = true;
+            return acc;
+          }, {});
+          setSolvedProblems(solvedMap);
+          console.log(solvedProblems);
+        } catch (error) {
+          console.error('Error fetching data', error);
+        }
+      } else {
+        try {
+          const problemResponse = await api.get('/api/problems/getAllProblems');
+          setProblems(problemResponse.data);
+        } catch (error) {
+          console.error('Error fetching the problem without user sign-in', error);
+        }
       }
     };
 
-    if (user) {
-      fetchData();
-    }
+    fetchData();
   }, [getAccessTokenSilently, user]);
   return (
     <>
