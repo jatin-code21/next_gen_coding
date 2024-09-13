@@ -9,8 +9,8 @@ const api = axios.create({
 
 const ProblemListContainer = styled.div`
   max-width: 800px;
-  margin: 5rem auto;
-  padding: 20px;
+  margin: 2.5rem auto;
+  padding: 10px;
 `;
 
 const ProblemItem = styled.div`

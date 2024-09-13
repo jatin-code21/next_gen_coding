@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -132,10 +132,57 @@ const ProModeSwitch = styled.div`
   margin-left: 1rem;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+`;
+
+const ModalButton = styled.button`
+  margin: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: ${props => props.primary ? '#007bff' : '#6c757d'};
+  color: white;
+`;
+
+const ProModePromo = styled.div`
+  background: linear-gradient(45deg, #FFA500, #FF6347);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+`;
+
 const Navbar = () => {
   const [isopen, setisopen] = React.useState(false);
   const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0();
   const [isProMode, setIsProMode] = useProMode();
+  const [showProConfirmModal, setShowProConfirmModal] = useState(false);
 
   const toggleMenu = () => {
     setisopen(!isopen);
@@ -152,10 +199,19 @@ const Navbar = () => {
   };
 
   const handleProModeToggle = () => {
-    setIsProMode(!isProMode);
+    if (!isProMode) {
+      setShowProConfirmModal(true);
+    } else {
+      setIsProMode(false);
+      // setting this state to the localstorage as well (can store at the backend also)
+      localStorage.setItem('isProMode', 'false');
+    }
+  }
 
-    // setting this state to the localstorage as well (can store at the backend also)
-    localStorage.setItem('isProMode', !isProMode);
+  const confirmProMode = () => {
+    setIsProMode(true);
+    localStorage.setItem('isProMode', 'true');
+    setShowProConfirmModal(false);
   }
 
   return (
@@ -206,6 +262,16 @@ const Navbar = () => {
           <MobileNavLink as="button" onClick={() => { handleLogin(); toggleMenu(); }}>Login</MobileNavLink>
         )}
       </MobileMenu>
+      {showProConfirmModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <h2>Switch to Pro Mode?</h2>
+            <p>Are you sure you want to switch to Pro Mode?</p>
+            <ModalButton primary onClick={confirmProMode}>Yes</ModalButton>
+            <ModalButton onClick={() => setShowProConfirmModal(false)}>No</ModalButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </Nav>
   );
 };

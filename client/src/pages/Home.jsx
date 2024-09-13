@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
 import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from '../components/Navbar'
 import axios from 'axios'
 import ProblemsToTry from '../components/ProblemsToTry';
 import Footer from '../components/Footer';
+import ProModeBannerHeader from '../components/ProModeBannerHeader';
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
 })
@@ -38,6 +40,7 @@ const Home = () => {
   return (
     <>
       <Navbar />
+      <ProModeBannerHeader />
       <ProblemsToTry />
       <Footer />
     </>
