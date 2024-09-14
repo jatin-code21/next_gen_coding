@@ -64,7 +64,7 @@ const ProModeBannerHeader = () => {
     <ProModeBanner>
       <BannerTitle>Unlock Pro Mode - Now Available!</BannerTitle>
       <BannerDescription>
-        Enhance your coding skills with advanced features, AI-powered analysis, and personalized learning paths.
+        Enhance your coding skills with advanced features, AI-powered analysis, and AI chat system for questions
       </BannerDescription>
       <BannerButton to="/pro-features">Explore Pro Features</BannerButton>
     </ProModeBanner>
