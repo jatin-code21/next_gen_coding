@@ -12,6 +12,7 @@ import SuccessModal from '../components/SuccessModal';
 import OptimizationModal from '../components/OptimizationModal';
 import { useProMode } from '../hooks/useProMode';
 import AIChat from '../components/AIChat';
+import AITestCases from '../components/AITestCases';
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -41,6 +42,36 @@ const ResultsPanel = styled.div`
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 `;
 
+const AIFeaturesContainer = styled.div`
+  margin-top: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+const TabContainer = styled.div`
+  display: flex;
+  background-color: #f5f5f5;
+`;
+
+const Tab = styled.button`
+  padding: 10px 20px;
+  border: none;
+  background-color: ${props => props.active ? '#fff' : '#f5f5f5'};
+  cursor: pointer;
+  flex: 1;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${props => props.active ? '#fff' : '#e0e0e0'};
+  }
+`;
+
+const TabContent = styled.div`
+  padding: 20px;
+  background-color: #fff;
+`;
+
 // const ResultsPanel = styled.div`
 //   position: fixed;
 //   bottom: 0;
@@ -65,6 +96,7 @@ const ProblemPage = () => {
     const [optimizationSuggestions, setOptimizationSuggestions] = useState([]);
     const [showOptimizationModal, setShowOptimizationModal] = useState(false);
     const [isProMode] = useProMode();
+    const [activeAITab, setActiveAITab] = useState('chat');
 
     console.log('Problem id is:', problemId);
 
@@ -273,7 +305,28 @@ const ProblemPage = () => {
             <PageContainer>
                 <LeftPanel>
                     <ProblemDetails problem={problem} />
-                    {isProMode && <AIChat problemId={problemId}/>}
+                    {isProMode && (
+                        <AIFeaturesContainer>
+                            <TabContainer>
+                                <Tab
+                                    active={activeAITab === 'chat'}
+                                    onClick={() => setActiveAITab('chat')}
+                                >
+                                    AI Chat
+                                </Tab>
+                                <Tab
+                                    active={activeAITab === 'testCases'}
+                                    onClick={() => setActiveAITab('testCases')}
+                                >
+                                    AI Test Cases Generator
+                                </Tab>
+                            </TabContainer>
+                            <TabContent>
+                                {activeAITab === 'chat' && <AIChat problemId={problemId} />}
+                                {activeAITab === 'testCases' && <AITestCases problemId={problemId} />}
+                            </TabContent>
+                        </AIFeaturesContainer>
+                    )}
                 </LeftPanel>
                 <RightPanel>
                     <CodeEditor

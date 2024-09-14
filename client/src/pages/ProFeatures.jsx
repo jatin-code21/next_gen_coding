@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import Navbar from '../components/Navbar';
 
 const PageContainer = styled.div`
   max-width: 800px;
@@ -62,49 +63,46 @@ const CTAButton = styled.button`
 `;
 
 const ProFeatures = () => {
-    const navigate = useNavigate();
-    const { loginWithRedirect } = useAuth0();
+  const navigate = useNavigate();
+  const { loginWithRedirect } = useAuth0();
 
-    const handleCTA = () => {
-        loginWithRedirect({
-            appState: { returnTo: '/problems' }
-        });
-    };
+  const handleCTA = () => {
+    loginWithRedirect({
+      appState: { returnTo: '/problems' }
+    });
+  };
 
-    return (
-        <PageContainer>
-            <Header>Unlock the Power of Pro Mode</Header>
-            <FeatureList>
-                <FeatureItem>
-                    <FeatureTitle>Advanced Problem Sets</FeatureTitle>
-                    <FeatureDescription>
-                        Access a curated collection of challenging problems designed to push your coding skills to the next level.
-                    </FeatureDescription>
-                </FeatureItem>
-                <FeatureItem>
-                    <FeatureTitle>AI-Powered Code Analysis</FeatureTitle>
-                    <FeatureDescription>
-                        Get instant feedback on your code quality, efficiency, and potential improvements with our advanced AI analysis.
-                    </FeatureDescription>
-                </FeatureItem>
-                <FeatureItem>
-                    <FeatureTitle>Personalized Learning Path</FeatureTitle>
-                    <FeatureDescription>
-                        Enjoy a tailored learning experience that adapts to your skill level and learning pace.
-                    </FeatureDescription>
-                </FeatureItem>
-                <FeatureItem>
-                    <FeatureTitle>Real-world Project Simulations</FeatureTitle>
-                    <FeatureDescription>
-                        Work on simulated projects that mimic real-world scenarios, preparing you for professional coding challenges.
-                    </FeatureDescription>
-                </FeatureItem>
-            </FeatureList>
-            <CTAButton onClick={handleCTA}>
-                Try Pro Mode Now - It's Free!
-            </CTAButton>
-        </PageContainer>
-    );
+  return (
+    <>
+      <Navbar />
+      <PageContainer>
+        <Header>Unlock the Power of Pro Mode</Header>
+        <FeatureList>
+          <FeatureItem>
+            <FeatureTitle>AI-Powered Code Analysis</FeatureTitle>
+            <FeatureDescription>
+              Get instant feedback on your code quality, efficiency, and potential improvements with our advanced AI analysis.
+            </FeatureDescription>
+          </FeatureItem>
+          <FeatureItem>
+            <FeatureTitle>AI-Powered Coding Assistant</FeatureTitle>
+            <FeatureDescription>
+              Get real-time help and explanations from our advanced AI chat feature. Ask questions, get clarifications, and receive coding tips as you work through problems.
+            </FeatureDescription>
+          </FeatureItem>
+          <FeatureItem>
+            <FeatureTitle>Automatic Test Case Generation</FeatureTitle>
+            <FeatureDescription>
+              Save time and improve your code's robustness with AI-generated test cases. Our system creates diverse test scenarios to help you catch edge cases and improve your solution's quality.
+            </FeatureDescription>
+          </FeatureItem>
+        </FeatureList>
+        <CTAButton onClick={handleCTA}>
+          Try Pro Mode Now - It's Free!
+        </CTAButton>
+      </PageContainer>
+    </>
+  );
 };
 
 export default ProFeatures;
