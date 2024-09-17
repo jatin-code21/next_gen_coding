@@ -13,22 +13,28 @@ const TestCaseTitle = styled.h3`
   margin-bottom: 5px;
 `;
 
-const TestCaseContent = styled.pre`
+const TestCaseContent = styled.div`
   background-color: #e0e0e0;
   padding: 5px;
   border-radius: 2px;
+  white-space: pre-wrap; 
+  word-wrap: break-word;
 `;
 
+const formatTextWithNewlines = (text) => {
+  return text.split('\\n').join('\n');
+};
+
 const TestCaseDisplay = ({ testCase, index }) => {
-    return (
-        <>
-            <TestCaseContainer>
-                <TestCaseTitle>Test Case {index}</TestCaseTitle>
-                <TestCaseContent>Input: {testCase.input}</TestCaseContent>
-                <TestCaseContent>Expected Output: {testCase.expectedOutput}</TestCaseContent>
-            </TestCaseContainer>
-        </>
-    )
+  return (
+    <>
+      <TestCaseContainer>
+        <TestCaseTitle>Test Case {index}</TestCaseTitle>
+        <TestCaseContent> Input:{'\n'}{formatTextWithNewlines(testCase.input)}</TestCaseContent>
+        <TestCaseContent>Expected Output: {testCase.expectedOutput}</TestCaseContent>
+      </TestCaseContainer>
+    </>
+  )
 }
 
 export default TestCaseDisplay

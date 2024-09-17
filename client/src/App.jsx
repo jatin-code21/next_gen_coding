@@ -1,5 +1,7 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
+import GlobalStyle from './GlobalStyle.js'
 import './App.css'
 
 const Home = lazy(() => import('./pages/Home.jsx'))
@@ -24,7 +26,11 @@ function App() {
           <Routes>
             <Route index element={<Home />}></Route>
             <Route path='/home' element={<Home />}></Route>
-            <Route path='/problems' element={<ProblemList />}></Route>
+            <Route path='/problems' element={
+              <ProtectedRoute>
+                <ProblemList />
+              </ProtectedRoute>
+            } />
             <Route path='/problems/:problemName/:problemId' element={<ProblemPage />}></Route>
             <Route path="/pro-features" element={<ProFeatures />} />
             <Route path='/login' element={<Login />}></Route>
@@ -35,6 +41,7 @@ function App() {
           </Routes>
         </Suspense>
       </BrowserRouter>
+
     </div>
   )
 }

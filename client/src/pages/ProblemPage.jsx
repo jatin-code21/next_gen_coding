@@ -130,6 +130,10 @@ const ProblemPage = () => {
         fetchUser();
     }, [isAuthenticated, user]);
 
+    const formatTextWithNewlines = (text) => {
+        return text.split('\\n').join('\n');
+    };
+
     const getLanguageId = (language) => {
         const languageMap = {
             cpp: 54,
@@ -187,7 +191,7 @@ const ProblemPage = () => {
             data: JSON.stringify({
                 language_id: getLanguageId(language),
                 source_code: btoa(code),
-                stdin: btoa(testCase.input),
+                stdin: btoa(formatTextWithNewlines(testCase.input)),
                 expected_output: btoa(testCase.expectedOutput)
             })
         }
