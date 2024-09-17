@@ -12,6 +12,7 @@ export const useProMode = () => {
   const toggleProMode = () => {
     const newProMode = !isProMode;
     setIsProMode(newProMode);
+    window.location.reload();
     localStorage.setItem('isProMode', JSON.stringify(newProMode));
   };
 
