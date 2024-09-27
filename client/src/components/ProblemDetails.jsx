@@ -69,6 +69,9 @@ const Tooltip = styled.div`
 
 const ProblemDetails = ({ problem }) => {
     const [showTooltip, setShowTooltip] = useState(false);
+    const formatTextWithNewlines = (text) => {
+        return text.split('\\n').join('\n');
+    };
     return (
         <>
             <DetailContainer>
@@ -96,7 +99,7 @@ const ProblemDetails = ({ problem }) => {
                 </Section>
                 <Section>
                     <SectionTitle>Constraints</SectionTitle>
-                    <p>{problem.constraints}</p>
+                    <pre>{formatTextWithNewlines(problem.constraints)}</pre>
                 </Section>
                 <Section>
                     <SectionTitle>Sample Test Cases:</SectionTitle>
