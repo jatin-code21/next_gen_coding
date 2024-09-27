@@ -207,15 +207,6 @@ const Navbar = () => {
     loginWithRedirect();
   };
 
-  const handleDemoLogin = () => {
-    loginWithRedirect({
-      connection: 'Username-Password-Authentication', // Use the name of your database connection
-      login_hint: 'demouser21@gmail.com', // Use your demo account email
-      initialScreen: 'login',
-      screen_hint: 'login',
-    });
-  }
-
   const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
@@ -263,10 +254,7 @@ const Navbar = () => {
               <AuthButton onClick={handleLogout}>Logout</AuthButton>
             </UserProfile>
           ) : (
-            <>
-              <AuthButton onClick={handleLogin}>Login</AuthButton>
-              <DemoLoginButton onClick={handleDemoLogin}>Demo Login</DemoLoginButton>
-            </>
+            <AuthButton onClick={handleLogin}>Login</AuthButton>
           )}
         </NavLinks>
         <HamburgerMenu onClick={toggleMenu}>
