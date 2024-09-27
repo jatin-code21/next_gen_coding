@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
-import GlobalStyle from './GlobalStyle.js'
+import Loader from './components/Loader.jsx'
 import './App.css'
 
 const Home = lazy(() => import('./pages/Home.jsx'))
@@ -15,7 +15,7 @@ const ProblemPage = lazy(() => import('./pages/ProblemPage.jsx'))
 const ComingSoonPage = lazy(() => import('./pages/ComingSoonPage.jsx'))
 const ProFeatures = lazy(() => import('./pages/ProFeatures.jsx'))
 
-const Loading = () => <div>Loading...</div>
+const Loading = () => <Loader />
 
 function App() {
 

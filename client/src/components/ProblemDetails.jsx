@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TestCaseDisplay from './TestCaseDisplay';
 import { FaLightbulb } from 'react-icons/fa';
+import pako from 'pako'
 
 const DetailContainer = styled.div`
   background-color: white;
@@ -69,6 +70,29 @@ const Tooltip = styled.div`
 
 const ProblemDetails = ({ problem }) => {
     const [showTooltip, setShowTooltip] = useState(false);
+    const [decodedString, setDecodedString] = useState('');
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        const decodeString = async () => {
+            try {
+                const binaryString = atob(problem.realWorldUse);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+
+                const decodedRealWorldUse = pako.inflate(bytes, { to: 'string' });
+                setDecodedString(decodedRealWorldUse);
+            } catch (error) {
+                console.error('Failed to decode the string', error);
+            }
+        }
+
+        if (problem.realWorldUse) {
+            decodeString();
+        }
+    }, [problem.realWorldUse]);
     const formatTextWithNewlines = (text) => {
         return text.split('\\n').join('\n');
     };
@@ -82,7 +106,7 @@ const ProblemDetails = ({ problem }) => {
                         onMouseLeave={() => setShowTooltip(false)}
                     >
                         <FaLightbulb color="#FFD700" />
-                        <Tooltip show={showTooltip}>{problem.realWorldUse}</Tooltip>
+                        <Tooltip show={showTooltip}>{decodedString}</Tooltip>
                     </BulbContainer>
                 </Title>
                 <Section>

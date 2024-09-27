@@ -71,6 +71,21 @@ const AuthButton = styled.button`
   }
 `;
 
+const DemoLoginButton = styled.button`
+  background-color: #3f0e08;
+  color: #ecf0f1;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 0.6rem;
+
+  &:hover {
+    background-color: #c0392b;
+  }
+`;
+
 const UserProfile = styled.div`
   display: flex;
   align-items: center;
@@ -192,6 +207,15 @@ const Navbar = () => {
     loginWithRedirect();
   };
 
+  const handleDemoLogin = () => {
+    loginWithRedirect({
+      connection: 'Username-Password-Authentication', // Use the name of your database connection
+      login_hint: 'demouser21@gmail.com', // Use your demo account email
+      initialScreen: 'login',
+      screen_hint: 'login',
+    });
+  }
+
   const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
@@ -239,7 +263,10 @@ const Navbar = () => {
               <AuthButton onClick={handleLogout}>Logout</AuthButton>
             </UserProfile>
           ) : (
-            <AuthButton onClick={handleLogin}>Login</AuthButton>
+            <>
+              <AuthButton onClick={handleLogin}>Login</AuthButton>
+              <DemoLoginButton onClick={handleDemoLogin}>Demo Login</DemoLoginButton>
+            </>
           )}
         </NavLinks>
         <HamburgerMenu onClick={toggleMenu}>
