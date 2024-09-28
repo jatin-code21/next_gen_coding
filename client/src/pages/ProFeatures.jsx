@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar';
 
 const PageContainer = styled.div`
   max-width: 800px;
-  margin: 0 auto;
+  margin: 3.2rem auto;
   padding: 40px 20px;
 `;
 
