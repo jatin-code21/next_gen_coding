@@ -5,6 +5,7 @@ import { Editor } from '@monaco-editor/react';
 const EditorContainer = styled.div`
   flex: 1;
   overflow: hidden;
+  bac
 `;
 
 const LanguageSelector = styled.select`
@@ -36,7 +37,8 @@ const CodeEditor = ({ code, setCode, language, setLanguage }) => {
                     <option value="java">Java</option>
                 </LanguageSelector>
                 <Editor
-                    height="90%"
+                    height="100%"
+                    width="100%"
                     language={language}
                     value={code}
                     onChange={handleEditorChange}

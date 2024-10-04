@@ -1,8 +1,7 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
-import GlobalStyle from './GlobalStyle.js'
-import './App.css'
+import ProblemsList1 from './pages/ProblemsList1.jsx'
 
 const Home = lazy(() => import('./pages/Home.jsx'))
 const Home1 = lazy(() => import('./pages/Home.jsx'))
@@ -29,7 +28,7 @@ function App() {
               <Route path='/home' element={<Home />}></Route>
               <Route path='/problems' element={
                 <ProtectedRoute>
-                  <ProblemList />
+                  <ProblemsList1 />
                 </ProtectedRoute>
               } />
               <Route path='/problems/:problemName/:problemId' element={<ProblemPage />}></Route>

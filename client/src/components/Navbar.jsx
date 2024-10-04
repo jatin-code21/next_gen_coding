@@ -185,7 +185,7 @@ export default function Navbar() {
             <NavLinks>
                 <NavLink to="/"><Users size={18} /> About Us</NavLink>
                 <NavLink to="/"><Activity size={18} /> Activities</NavLink>
-                <NavLink to="/"><Code size={18} /> Problems</NavLink>
+                <NavLink to="/problems"><Code size={18} /> Problems</NavLink>
                 <NavLink to="/"><Award size={18} /> Leaderboard</NavLink>
             </NavLinks>
             <AuthSection>

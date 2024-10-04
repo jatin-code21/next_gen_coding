@@ -10,7 +10,6 @@ const api = axios.create({
 })
 
 const Container = styled.div`
-  font-family: 'Arial', sans-serif;
   color: #333;
   background-color: #f0f4f8;
   min-height: 100vh;

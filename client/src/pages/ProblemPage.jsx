@@ -21,20 +21,25 @@ const api = axios.create({
 const PageContainer = styled.div`
   display: flex;
   height: calc(100vh - 70px);
-  margin-top: 70px;
+  margin-top: 2.7rem;
 `;
 
 const LeftPanel = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
-  background-color: #f5f5f5;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #f0f4f8;
 `;
 
 const RightPanel = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  background-color: #f0f4f8;
+  background: #494e51;
+  width: min-content;
+  border-radius: 8px;
 `;
 
 const ResultsPanel = styled.div`
