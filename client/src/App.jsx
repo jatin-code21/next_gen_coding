@@ -5,6 +5,7 @@ import GlobalStyle from './GlobalStyle.js'
 import './App.css'
 
 const Home = lazy(() => import('./pages/Home.jsx'))
+const Home1 = lazy(() => import('./pages/Home.jsx'))
 const ProblemList = lazy(() => import('./pages/ProblemsList.jsx'))
 const Login = lazy(() => import('./pages/Login.jsx'))
 const Activities = lazy(() => import('./pages/Activities.jsx'))
@@ -20,29 +21,28 @@ const Loading = () => <div>Loading...</div>
 function App() {
 
   return (
-    <div>
-      <BrowserRouter>
-        <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route index element={<Home />}></Route>
-            <Route path='/home' element={<Home />}></Route>
-            <Route path='/problems' element={
-              <ProtectedRoute>
-                <ProblemList />
-              </ProtectedRoute>
-            } />
-            <Route path='/problems/:problemName/:problemId' element={<ProblemPage />}></Route>
-            <Route path="/pro-features" element={<ProFeatures />} />
-            <Route path='/login' element={<Login />}></Route>
-            <Route path='/about' element={<ComingSoonPage />}></Route>
-            <Route path='/activities' element={<Activities />}></Route>
-            <Route path='/leaderboard' element={<ComingSoonPage />}></Route>
-            <Route path='/profile' element={<Profile />}></Route>
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-
-    </div>
+      <div>
+        <BrowserRouter>
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route index element={<Home />}></Route>
+              <Route path='/home' element={<Home />}></Route>
+              <Route path='/problems' element={
+                <ProtectedRoute>
+                  <ProblemList />
+                </ProtectedRoute>
+              } />
+              <Route path='/problems/:problemName/:problemId' element={<ProblemPage />}></Route>
+              <Route path="/pro-features" element={<ProFeatures />} />
+              <Route path='/login' element={<Login />}></Route>
+              <Route path='/about' element={<ComingSoonPage />}></Route>
+              <Route path='/activities' element={<Activities />}></Route>
+              <Route path='/leaderboard' element={<ComingSoonPage />}></Route>
+              <Route path='/profile' element={<Profile />}></Route>
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </div>
   )
 }
 
