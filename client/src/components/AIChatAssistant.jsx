@@ -318,7 +318,7 @@ const AIChatAssistant = ({ problemId }) => {
                             onChange={(e) => setInput(e.target.value)}
                             onKeyPress={handleKeyPress}
                         />
-                        <SendButton onClick={handleSend} disabled={!input.trim() || remainingQuestions === 0}>
+                        <SendButton type='submit' onClick={handleSend} disabled={!input.trim() || remainingQuestions === 0}>
                             <Send size={24} />
                         </SendButton>
                         <RemainingQuestions>{remainingQuestions} left</RemainingQuestions>

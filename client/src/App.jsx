@@ -15,14 +15,12 @@ const ProblemPage = lazy(() => import('./pages/ProblemPage.jsx'))
 const ComingSoonPage = lazy(() => import('./pages/ComingSoonPage.jsx'))
 const ProFeatures = lazy(() => import('./pages/ProFeatures.jsx'))
 
-const Loading = () => <Loader />
-
 function App() {
 
   return (
       <div>
         <BrowserRouter>
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<>loading</>}>
             <Routes>
               <Route index element={<Home />}></Route>
               <Route path='/home' element={<Home />}></Route>
