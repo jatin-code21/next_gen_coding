@@ -5,7 +5,7 @@ export const GlobalStyle = createGlobalStyle`
     body{
         margrin: 0;
         padding: 0;
-        background-color: #d2d2d2;
-        font-family: "Poppins", sans-serif;  
+        background-color: #f0f4f8;
+        font-family:"Poppins", sans-serif;  
     }
 `

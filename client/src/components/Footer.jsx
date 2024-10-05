@@ -1,164 +1,176 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
-
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import axios from 'axios'
 const api = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
-  })
+  baseURL: import.meta.env.VITE_BASE_URL,
+})
 
-const FooterContainer = styled.footer`
-  background-color: #333;
-  color: #fff;
-  padding: 40px 0;
-  font-size: 14px;
-`;
-
-const FooterContent = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
+const Footer = styled.footer`
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 3rem 5%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-`;
+`
 
 const FooterSection = styled.div`
-  flex-basis: 25%;
-  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`
 
-  h3 {
-    font-size: 18px;
-    margin-bottom: 20px;
+const FooterTitle = styled.h4`
+  color: #4a90e2;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+`
+
+const FooterLink = styled.a`
+  color: #ecf0f1;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
   }
-
-  p {
-    line-height: 1.5;
-    margin-bottom: 10px;
+`
+const Button = styled.button`
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #3a7bd5;
   }
+`
 
-  a {
-    color: #ccc;
-    text-decoration: none;
-    transition: color 0.3s;
-
-    &:hover {
-      color: #fff;
-    }
-  }
-`;
-
-const FeedbackForm = styled.form`
-  background-color: #444;
-  border-radius: 8px;
+const FormContainer = styled.div`
+  background-color: #2c3e50;
+  color: #fff;
   padding: 20px;
-  width: 300px;
+  border-radius: 8px;
+  max-width: 400px;
+  margin: 0 auto;
+`
 
-  input,
-  textarea {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    background-color: #555;
-    color: #fff;
+const Title = styled.h2`
+  color: #3498db;
+  margin-bottom: 20px;
+`
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`
+
+const Input = styled.input`
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 4px;
+`
+
+const TextArea = styled.textarea`
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 100px;
+`
+
+const SubmitButton = styled.button`
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #2980b9;
   }
+`
 
-  button {
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+const SuccessMessage = styled.p`
+  color: #2ecc71;
+  margin-top: 10px;
+`
 
-    &:hover {
-      background-color: #45a049;
-    }
+const Footerr = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    feedback: ''
+  })
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
-`;
+  const handleFeedbackSubmit = async (e) => {
+    e.preventDefault();
 
-const Footer = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        feedback: ''
-    })
-
-    const handleInputChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    try {
+      await api.post('/api/feedback', formData);
+      // Resetting the form after successful submission
+      setFormData({ name: '', email: '', feedback: '' });
+      setIsSubmitted(true);
+      // alert('Feedback submitted successfully!');
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      alert('Failed to submit feedback. Please try again later.');
     }
+  };
+  return (
+    <>
+      <Footer>
+        <FooterSection>
+          <FooterTitle>Contact Us</FooterTitle>
+          <FooterLink href="mailto:info@nextgencoding.com">info@nextgencoding.com</FooterLink>
+          <p>123 Street, Pune, Maharashtra, India</p>
+        </FooterSection>
+        <FooterSection>
+          <FooterTitle>Legal</FooterTitle>
+          <FooterLink href="#">Terms of Service</FooterLink>
+          <FooterLink href="#">Privacy Policy</FooterLink>
+        </FooterSection>
+        <FooterSection>
+          <Title>We'd love to hear from you!</Title>
+          <Form onSubmit={handleFeedbackSubmit}>
+            <Input
+              type="text"
+              placeholder="Your Name"
+              name='name'
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+            />
+            <Input
+              type="email"
+              placeholder="Your Email"
+              name='email'
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+            />
+            <TextArea
+              placeholder="Your Feedback"
+              name='feedback'
+              value={formData.feedback}
+              onChange={handleInputChange}
+              required
+            />
+            <SubmitButton type="submit">Send Feedback</SubmitButton>
+          </Form>
+          {isSubmitted && <SuccessMessage>Thank you for your feedback!</SuccessMessage>}
+        </FooterSection>
+      </Footer>
+    </>
+  )
+}
 
-    const handleFeedbackSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            await api.post('/api/feedback', formData);
-            // Resetting the form after successful submission
-            setFormData({ name: '', email: '', feedback: '' });
-            alert('Feedback submitted successfully!');
-        } catch (error) {
-            console.error('Error submitting feedback:', error);
-            alert('Failed to submit feedback. Please try again later.');
-        }
-    };
-
-    return (
-        <FooterContainer>
-            <FooterContent>
-                <FooterSection>
-                    <h3>About Us</h3>
-                    <p>
-                        We are a team of developers passionate about creating amazing
-                        applications.
-                    </p>
-                </FooterSection>
-                <FooterSection>
-                    <h3>Contact Us</h3>
-                    <p>
-                        Email: next_gen_coding_support@gmail.com
-                        <br />
-                        Phone: 123-456-7890
-                    </p>
-                </FooterSection>
-                <FooterSection>
-                    <h3>Legal</h3>
-                    <p>
-                        <a href="#">Terms of Service</a>
-                        <br />
-                        <a href="#">Privacy Policy</a>
-                    </p>
-                </FooterSection>
-                <FooterSection>
-                    <h3>Feedback</h3>
-                    <FeedbackForm onSubmit={handleFeedbackSubmit}>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                        />
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                        />
-                        <textarea
-                            name="feedback"
-                            placeholder="Your feedback"
-                            value={formData.feedback}
-                            onChange={handleInputChange}
-                        />
-                        <button type="submit">Submit</button>
-                    </FeedbackForm>
-                </FooterSection>
-            </FooterContent>
-        </FooterContainer>
-    );
-};
-
-export default Footer;
+export default Footerr

@@ -1,16 +1,20 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useEffect } from 'react'
+import axios from 'axios'
+import styled from 'styled-components'
 import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from '../components/Navbar'
-import axios from 'axios'
-import ProblemsToTry from '../components/ProblemsToTry';
-import Footer from '../components/Footer';
-import ProModeBannerHeader from '../components/ProModeBannerHeader';
+import ProblemsToTry from '../components/ProblemsToTry'
+import Footer from '../components/Footer'
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
 })
 
-const Home = () => {
+const Container = styled.div`
+  color: #333;
+  background-color: #f0f4f8;
+  min-height: 100vh;
+`
+export default function HomePage() {
   const { user, isAuthenticated } = useAuth0();
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -38,13 +42,10 @@ const Home = () => {
     }
   }, [isAuthenticated, user]);
   return (
-    <>
+    <Container>
       <Navbar />
-      <ProModeBannerHeader />
       <ProblemsToTry />
       <Footer />
-    </>
+    </Container>
   )
 }
-
-export default Home

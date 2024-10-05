@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import Navbar from '../components/Navbar';
+import { CheckCircle } from 'lucide-react';
+import { useAuth0 } from '@auth0/auth0-react';
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
 })
-
 
 const MainContent = styled.main`
   padding: 3rem 5%;
@@ -46,6 +48,7 @@ const SolveButton = styled(Link)`
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
+  text-align: center;
   transition: background-color 0.3s ease;
   &:hover {
     background-color: #3a7bd5;
@@ -80,44 +83,66 @@ const ProblemDifficulty = styled.span`
         }
     }}
 `
-
-const ProblemsToTry = () => {
+const ProblemsList1 = () => {
     const [problems, setProblems] = useState([]);
-    const [topProblems, setTopProblems] = useState([]);
-    // const demo = () =>{
-    //     setTopProblems(topProblems);
-    // }
+    const [solvedProblems, setSolvedProblems] = useState({})
+    const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
     useEffect(() => {
-        const fetchProblem = async () => {
-            try {
-                const response = await api.get('/api/problems/getAllProblems');
-                setProblems(response.data);
-                console.log("all prob", response.data);
-                const selectedTopProblems = response.data.slice(0, 5);
-                console.log("Selected", selectedTopProblems);
-                setTopProblems(selectedTopProblems);
-                console.log("top", topProblems);
-            } catch (error) {
-                console.error('Error fetching the Problem', error);
+        const fetchData = async () => {
+            if (isAuthenticated) {
+                try {
+                    const token = await getAccessTokenSilently();
+                    console.log('The token is', token);
+                    const [problemsResponse, solvedResponse] = await Promise.all([
+                        api.get('/api/problems/getAllProblems', {
+                            headers: { Authorization: `Bearer ${token}` }
+                        }),
+                        api.get('/api/submissions/solved', {
+                            headers: { Authorization: `Bearer ${token}` }
+                        })
+                    ]);
+
+                    setProblems(problemsResponse.data);
+                    // console.log('The problem Response is', problemsResponse.data);
+                    console.log('Solved response is', solvedResponse.data.solvedProblems);
+
+                    // Convert the array of solved problems into an object for easier lookup
+                    const solvedMap = solvedResponse.data.solvedProblems.reduce((acc, _id) => {
+                        acc[_id] = true;
+                        return acc;
+                    }, {});
+                    setSolvedProblems(solvedMap);
+                    console.log(solvedProblems);
+                } catch (error) {
+                    console.error('Error fetching data', error);
+                }
+            } else {
+                try {
+                    const problemResponse = await api.get('/api/problems/getAllProblems');
+                    setProblems(problemResponse.data);
+                } catch (error) {
+                    console.error('Error fetching the problem without user sign-in', error);
+                }
             }
-        }
-        fetchProblem();
-    }, [])
+        };
+        fetchData();
+    }, [getAccessTokenSilently, user]);
     const capitalFirstChar = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1)
     }
     return (
         <>
+            <Navbar />
             <MainContent>
-                <SectionTitle>Featured Problems:</SectionTitle>
+                <SectionTitle>Problems:</SectionTitle>
                 <ProblemList>
-                    {topProblems.map((problem) => (
+                    {problems.map((problem) => (
                         <ProblemCard key={problem.problemId}>
                             <ProblemInfo>
                                 <ProblemTitle>{problem.title}</ProblemTitle>
                                 <ProblemDifficulty level={capitalFirstChar(problem.difficulty)}>{capitalFirstChar(problem.difficulty)}</ProblemDifficulty>
                             </ProblemInfo>
-                            <SolveButton to={`/problems/${problem.title.toLowerCase().replace(/\s+/g, '-')}/${problem.problemId}`}>Solve</SolveButton>
+                            <SolveButton to={`/problems/${problem.title.toLowerCase().replace(/\s+/g, '-')}/${problem.problemId}`}>{solvedProblems[problem._id] && <CheckCircle size={21} />}Solve</SolveButton>
                         </ProblemCard>
                     ))}
                 </ProblemList>
@@ -126,4 +151,4 @@ const ProblemsToTry = () => {
     )
 }
 
-export default ProblemsToTry
+export default ProblemsList1

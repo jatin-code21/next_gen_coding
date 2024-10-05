@@ -17,6 +17,7 @@
     "@mui/material": "^6.0.2",
     "@mui/styled-engine-sc": "^6.0.2",
     "axios": "^1.7.3",
+    "lucide-react": "^0.447.0",
     "mongoose": "^8.5.2",
     "pako": "^2.1.0",
     "react": "^18.3.1",

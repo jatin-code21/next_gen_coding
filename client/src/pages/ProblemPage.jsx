@@ -14,6 +14,8 @@ import Loader from '../components/Loader';
 import { useProMode } from '../hooks/useProMode';
 import AIChat from '../components/AIChat';
 import AITestCases from '../components/AITestCases';
+import CodeReport from '../components/CodeReport';
+import AIChatAssistant from '../components/AIChatAssistant';
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -22,20 +24,25 @@ const api = axios.create({
 const PageContainer = styled.div`
   display: flex;
   height: calc(100vh - 70px);
-  margin-top: 70px;
+  margin-top: 2.7rem;
 `;
 
 const LeftPanel = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
-  background-color: #f5f5f5;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #f0f4f8;
 `;
 
 const RightPanel = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  background-color: #f0f4f8;
+  background: #494e51;
+  width: min-content;
+  border-radius: 8px;
 `;
 
 const ResultsPanel = styled.div`
@@ -312,7 +319,7 @@ const ProblemPage = () => {
                     <ProblemDetails problem={problem} />
                     {isProMode && (
                         <AIFeaturesContainer>
-                            <TabContainer>
+                            {/* <TabContainer>
                                 <Tab
                                     active={activeAITab === 'chat'}
                                     onClick={() => setActiveAITab('chat')}
@@ -325,11 +332,14 @@ const ProblemPage = () => {
                                 >
                                     AI Test Cases Generator
                                 </Tab>
-                            </TabContainer>
-                            <TabContent>
+                            </TabContainer> */}
+                            {
+                                <AIChatAssistant problemId={problemId}/>
+                            }
+                            {/* <TabContent>
                                 {activeAITab === 'chat' && <AIChat problemId={problemId} />}
                                 {activeAITab === 'testCases' && <AITestCases problemId={problemId} />}
-                            </TabContent>
+                            </TabContent> */}
                         </AIFeaturesContainer>
                     )}
                 </LeftPanel>
@@ -352,12 +362,15 @@ const ProblemPage = () => {
                     )}
                 </RightPanel>
             </PageContainer>
-            {showCaseModal && <SuccessModal onClose={closeSuccessModal} />}
-            <OptimizationModal
+            {/* {showCaseModal && <SuccessModal onClose={closeSuccessModal} />} */}
+            <CodeReport isOpen={showOptimizationModal} onClose={() => setShowOptimizationModal(false)}
+                suggestions={optimizationSuggestions}
+            />
+            {/* <OptimizationModal
                 isOpen={showOptimizationModal}
                 onClose={() => setShowOptimizationModal(false)}
                 suggestions={optimizationSuggestions}
-            />
+            /> */}
         </>
     )
 }

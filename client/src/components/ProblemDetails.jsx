@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TestCaseDisplay from './TestCaseDisplay';
 import { FaLightbulb } from 'react-icons/fa';
