@@ -13,6 +13,7 @@ import OptimizationModal from '../components/OptimizationModal';
 import { useProMode } from '../hooks/useProMode';
 import AIChat from '../components/AIChat';
 import AITestCases from '../components/AITestCases';
+import CodeReport from '../components/CodeReport';
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -356,12 +357,15 @@ const ProblemPage = () => {
                     )}
                 </RightPanel>
             </PageContainer>
-            {showCaseModal && <SuccessModal onClose={closeSuccessModal} />}
-            <OptimizationModal
+            {/* {showCaseModal && <SuccessModal onClose={closeSuccessModal} />} */}
+            <CodeReport isOpen={showOptimizationModal} onClose={() => setShowOptimizationModal(false)}
+                suggestions={optimizationSuggestions}
+            />
+            {/* <OptimizationModal
                 isOpen={showOptimizationModal}
                 onClose={() => setShowOptimizationModal(false)}
                 suggestions={optimizationSuggestions}
-            />
+            /> */}
         </>
     )
 }

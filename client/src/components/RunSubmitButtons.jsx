@@ -23,6 +23,10 @@ const Button = styled.button`
   align-items: center;
   gap: 8px;
   transition: background-color 0.3s ease;
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 `
 
 const RunButton = styled(Button)`
@@ -30,12 +34,20 @@ const RunButton = styled(Button)`
   &:hover {
     background-color: #38a169;
   }
+
+  &:hover:not(:disabled) {
+    background-color: #45a049;
+  }
 `
 
 const SubmitButton = styled(Button)`
   background-color: #4a90e2;
   &:hover {
     background-color: #3182ce;
+  }
+  
+  &:hover:not(:disabled) {
+    background-color: #1e88e5;
   }
 `
 // const ButtonContainer = styled.div`
