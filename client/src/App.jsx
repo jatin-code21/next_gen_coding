@@ -7,7 +7,7 @@ const Home = lazy(() => import('./pages/Home.jsx'))
 const Home1 = lazy(() => import('./pages/Home.jsx'))
 const ProblemList = lazy(() => import('./pages/ProblemsList.jsx'))
 const Login = lazy(() => import('./pages/Login.jsx'))
-const Activities = lazy(() => import('./pages/Activities.jsx'))
+const RecentActivities = lazy(() => import('./pages/RecentActivities.jsx'))
 const About = lazy(() => import('./pages/About.jsx'))
 const Leadboard = lazy(() => import('./pages/Leadboard.jsx'))
 const Profile = lazy(() => import('./pages/Profile.jsx'))
@@ -35,7 +35,7 @@ function App() {
               <Route path="/pro-features" element={<ProFeatures />} />
               <Route path='/login' element={<Login />}></Route>
               <Route path='/about' element={<ComingSoonPage />}></Route>
-              <Route path='/activities' element={<Activities />}></Route>
+              <Route path='/activities' element={<RecentActivities/>}></Route>
               <Route path='/leaderboard' element={<ComingSoonPage />}></Route>
               <Route path='/profile' element={<Profile />}></Route>
             </Routes>

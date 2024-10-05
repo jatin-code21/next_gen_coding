@@ -183,10 +183,10 @@ export default function Navbar() {
         <Navbaar>
             <Logo to='/'>NextGen Coding</Logo>
             <NavLinks>
-                <NavLink to="/"><Users size={18} /> About Us</NavLink>
-                <NavLink to="/"><Activity size={18} /> Activities</NavLink>
+                <NavLink to="/about"><Users size={18} /> About Us</NavLink>
+                <NavLink to="/activities"><Activity size={18} /> Activities</NavLink>
                 <NavLink to="/problems"><Code size={18} /> Problems</NavLink>
-                <NavLink to="/"><Award size={18} /> Leaderboard</NavLink>
+                <NavLink to="/leaderboard"><Award size={18} /> Leaderboard</NavLink>
             </NavLinks>
             <AuthSection>
                 <ProModeSwitch
