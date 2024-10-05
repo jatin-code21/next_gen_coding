@@ -14,6 +14,7 @@ import { useProMode } from '../hooks/useProMode';
 import AIChat from '../components/AIChat';
 import AITestCases from '../components/AITestCases';
 import CodeReport from '../components/CodeReport';
+import AIChatAssistant from '../components/AIChatAssistant';
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -317,7 +318,7 @@ const ProblemPage = () => {
                     <ProblemDetails problem={problem} />
                     {isProMode && (
                         <AIFeaturesContainer>
-                            <TabContainer>
+                            {/* <TabContainer>
                                 <Tab
                                     active={activeAITab === 'chat'}
                                     onClick={() => setActiveAITab('chat')}
@@ -330,11 +331,14 @@ const ProblemPage = () => {
                                 >
                                     AI Test Cases Generator
                                 </Tab>
-                            </TabContainer>
-                            <TabContent>
+                            </TabContainer> */}
+                            {
+                                <AIChatAssistant problemId={problemId}/>
+                            }
+                            {/* <TabContent>
                                 {activeAITab === 'chat' && <AIChat problemId={problemId} />}
                                 {activeAITab === 'testCases' && <AITestCases problemId={problemId} />}
-                            </TabContent>
+                            </TabContent> */}
                         </AIFeaturesContainer>
                     )}
                 </LeftPanel>

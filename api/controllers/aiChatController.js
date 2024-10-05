@@ -33,7 +33,7 @@ const askQuestion = async (req, res) => {
             messages: [
                 {
                     role: 'system',
-                    content: `you are given a problem in form of json: ${problem}. Now considering the given json fetched from the datebase, answer the question provided by the user only regarding this question itself. If any other question is asked which is not related to this problem you can send the response as "ask question related to this specific problem only. Also make sure if asked for the full solution for the problem or code of the problem, dont provide it."`
+                    content: `you are given a problem in form of json: ${problem}. Now considering the given json fetched from the datebase, answer the question provided by the user only regarding this question itself. If any other question is asked which is not related to this problem you can send the response as "ask question related to this specific problem only. Also make sure if asked for the full solution for the problem or code of the problem, dont provide it. Also make sure that you dont provide the detail in which the problem is stored, here JSON is the case so dont provide the problem body structure to the user."`
                 },
                 {
                     role: "user",
