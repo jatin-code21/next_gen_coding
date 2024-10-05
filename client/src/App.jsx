@@ -15,7 +15,7 @@ const ProblemPage = lazy(() => import('./pages/ProblemPage.jsx'))
 const ComingSoonPage = lazy(() => import('./pages/ComingSoonPage.jsx'))
 const ProFeatures = lazy(() => import('./pages/ProFeatures.jsx'))
 
-const Loading = () => <div>Loading...</div>
+const Loading = () => <Loader />
 
 function App() {
 

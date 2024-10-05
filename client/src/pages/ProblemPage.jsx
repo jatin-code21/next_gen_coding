@@ -10,6 +10,7 @@ import Navbar from '../components/Navbar';
 import TestCaseResults from '../components/TestCaseResults';
 import SuccessModal from '../components/SuccessModal';
 import OptimizationModal from '../components/OptimizationModal';
+import Loader from '../components/Loader';
 import { useProMode } from '../hooks/useProMode';
 import AIChat from '../components/AIChat';
 import AITestCases from '../components/AITestCases';
@@ -307,7 +308,7 @@ const ProblemPage = () => {
     }
 
     if (!problem) {
-        return <div>Loading...</div>;
+        return <Loader />;
     }
 
     return (
