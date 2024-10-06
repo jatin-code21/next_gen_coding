@@ -145,87 +145,89 @@ const UserName = styled(Link)`
 `
 
 export default function Navbar() {
-    const [isopen, setisopen] = React.useState(false);
-    const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0();
-    const [isProMode, setIsProMode] = useProMode();
-    const [showProConfirmModal, setShowProConfirmModal] = useState(false);
+  const [isopen, setisopen] = React.useState(false);
+  const { loginWithRedirect, logout, user, isAuthenticated, isLoading } = useAuth0();
+  const [isProMode, setIsProMode] = useProMode();
+  const [showProConfirmModal, setShowProConfirmModal] = useState(false);
 
-    const toggleMenu = () => {
-        setisopen(!isopen);
-    };
+  const toggleMenu = () => {
+    setisopen(!isopen);
+  };
 
-    const handleLogin = () => {
-        loginWithRedirect();
-    };
+  const handleLogin = () => {
+    loginWithRedirect();
+  };
 
-    const handleLogout = () => {
-        localStorage.clear();
-        sessionStorage.clear();
-        logout({ returnTo: window.location.origin });
-    };
+  const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    logout({ returnTo: window.location.origin });
+  };
 
-    const handleProModeToggle = () => {
-        if (!isProMode) {
-            setShowProConfirmModal(true);
-        } else {
-            setIsProMode(false);
-            // setting this state to the localstorage as well (can store at the backend also)
-            localStorage.setItem('isProMode', 'false');
-        }
+  const handleProModeToggle = () => {
+    if (!isProMode) {
+      setShowProConfirmModal(true);
+    } else {
+      setIsProMode(false);
+      // setting this state to the localstorage as well (can store at the backend also)
+      localStorage.setItem('isProMode', 'false');
     }
+  }
 
-    const confirmProMode = () => {
-        setIsProMode(true);
-        localStorage.setItem('isProMode', 'true');
-        setShowProConfirmModal(false);
-    }
-    return (
-        <Navbaar>
-            <Logo to='/'>NextGen Coding</Logo>
-            <NavLinks>
-                <NavLink to="/about"><Users size={18} /> About Us</NavLink>
-                <NavLink to="/activities"><Activity size={18} /> Activities</NavLink>
-                <NavLink to="/problems"><Code size={18} /> Problems</NavLink>
-                <NavLink to="/leaderboard"><Award size={18} /> Leaderboard</NavLink>
-            </NavLinks>
-            <AuthSection>
-                <ProModeSwitch
-                    onClick={handleProModeToggle}
-                    isProMode={isProMode}
-                    aria-label={isProMode ? "Disable Pro Mode" : "Enable Pro Mode"}
-                >
-                    <Zap size={18} />
-                    {isProMode ? ' Pro' : ' Normal'}
-                </ProModeSwitch>
-                {isAuthenticated ? (
-                    <UserProfile>
-                        <UserName to="/profile">
-                            <User size={18} />
-                            {user.name}
-                        </UserName>
-                        <AuthButton onClick={handleLogout}>
-                            <LogOut size={18} />
-                            Logout
-                        </AuthButton>
-                    </UserProfile>
-                ) : (
-                    <AuthButton onClick={handleLogin}>
-                        <User size={18} />
-                        Login
-                    </AuthButton>
-                )}
-            </AuthSection>
-            {showProConfirmModal && (
-                <ModalOverlay>
-                    <ModalContent>
-                        <h2>Switch to Pro Mode?</h2>
-                        <p>Are you sure you want to switch to Pro Mode?</p>
-                        <ModalButton primary onClick={confirmProMode}>Yes</ModalButton>
-                        <ModalButton onClick={() => setShowProConfirmModal(false)}>No</ModalButton>
-                    </ModalContent>
-                </ModalOverlay>
-            )}
-        </Navbaar>
-    )
+  const confirmProMode = () => {
+    setIsProMode(true);
+    localStorage.setItem('isProMode', 'true');
+    setShowProConfirmModal(false);
+  }
+  return (
+    <>
+      <Navbaar>
+        <Logo to='/'>NextGen Coding</Logo>
+        <NavLinks>
+          <NavLink to="/about"><Users size={18} /> About Us</NavLink>
+          <NavLink to="/activities"><Activity size={18} /> Activities</NavLink>
+          <NavLink to="/problems"><Code size={18} /> Problems</NavLink>
+          <NavLink to="/leaderboard"><Award size={18} /> Leaderboard</NavLink>
+        </NavLinks>
+        <AuthSection>
+          <ProModeSwitch
+            onClick={handleProModeToggle}
+            isProMode={isProMode}
+            aria-label={isProMode ? "Disable Pro Mode" : "Enable Pro Mode"}
+          >
+            <Zap size={18} />
+            {isProMode ? ' Pro' : ' Normal'}
+          </ProModeSwitch>
+          {isAuthenticated ? (
+            <UserProfile>
+              <UserName to="/profile">
+                <User size={18} />
+                {user.name}
+              </UserName>
+              <AuthButton onClick={handleLogout}>
+                <LogOut size={18} />
+                Logout
+              </AuthButton>
+            </UserProfile>
+          ) : (
+            <AuthButton onClick={handleLogin}>
+              <User size={18} />
+              Login
+            </AuthButton>
+          )}
+        </AuthSection>
+        {showProConfirmModal && (
+          <ModalOverlay>
+            <ModalContent>
+              <h2>Switch to Pro Mode?</h2>
+              <p>Are you sure you want to switch to Pro Mode?</p>
+              <ModalButton primary onClick={confirmProMode}>Yes</ModalButton>
+              <ModalButton onClick={() => setShowProConfirmModal(false)}>No</ModalButton>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+      </Navbaar>
+    </>
+  )
 
 }
