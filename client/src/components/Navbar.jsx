@@ -38,23 +38,23 @@ const NavLink = styled(Link)`
   }
 `
 
-const Button = styled.button`
-  background-color: #000000;
-  color: white;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  &:hover {
-    background-color: #3a7bd5;
-  }
-`
+// const Button = styled.button`
+//   background-color: #000000;
+//   color: white;
+//   border: none;
+//   padding: 0.7rem 1.5rem;
+//   border-radius: 20px;
+//   font-weight: bold;
+//   cursor: pointer;
+//   transition: background-color 0.3s ease;
+//   &:hover {
+//     background-color: #3a7bd5;
+//   }
+// `
 
-const NavButtonContainer = styled.div`
-  display: flex;
-`
+// const NavButtonContainer = styled.div`
+//   display: flex;
+// `
 
 const ProModeSwitch = styled.button`
   background-color: ${props => props.isProMode ? '#4a90e2' : '#f0f4f8'};
