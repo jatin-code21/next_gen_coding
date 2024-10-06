@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react';
 import { CheckCircle, Code, Award, Activity, Users, Zap, User, LogOut } from 'lucide-react'
 import { useProMode } from '../hooks/useProMode';
+import { GlobalStyle } from './GlobalStyle';
 
 const Navbaar = styled.nav`
   display: flex;
@@ -181,6 +182,7 @@ export default function Navbar() {
   }
   return (
     <>
+      <GlobalStyle/>
       <Navbaar>
         <Logo to='/'>NextGen Coding</Logo>
         <NavLinks>
