@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import axios from 'axios';
-import { Send, Bot, User, Loader, FileText } from 'lucide-react'
+import { Send, Bot, User, Loader, FileText, UserRound } from 'lucide-react'
 import { useAuth0 } from '@auth0/auth0-react';
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -221,22 +221,23 @@ const AIChatAssistant = ({ problemId }) => {
         const token = await getAccessTokenSilently();
         if (input.trim() === '' || remainingQuestions <= 0 || isLoading) return;
 
-        const newMessage = { text: input, sender: 'user' };
+        const newMessage = { text: input, sender: true };
         setMessages(prevMessages => [...prevMessages, newMessage]);
         setInput('');
         setIsLoading(true);
 
-        try {
+        // sender true represents its a user and false means its ai response
+        try { 
             const response = await api.post('/api/ai-chat/ask', {
                 question: input,
                 problemId
             }, { headers: { Authorization: `Bearer ${token}` } });
-            const aiResponse = { text: response.data.answer, sender: 'ai' };
+            const aiResponse = { text: response.data.answer, sender: false };
             setMessages(prevMessages => [...prevMessages, aiResponse]);
             setRemainingQuestions(response.data.questionsLeft);
         } catch (error) {
             console.error('Error sending message to AI:', error);
-            setMessages(prevMessages => [...prevMessages, { text: "Sorry, I couldn't process your request. Please try again later.", sender: 'ai' }]);
+            setMessages(prevMessages => [...prevMessages, { text: "Sorry, I couldn't process your request. Please try again later.", sender: false }]); 
         } finally {
             setIsLoading(false);
         }
@@ -273,10 +274,10 @@ const AIChatAssistant = ({ problemId }) => {
                         <>
                             {messages.map((message, index) => (
                                 <MessageContainer key={index}>
-                                    <IconContainer isUser={message.isUser}>
-                                        {message.isUser ? <User size={18} color="white" /> : <Bot size={18} color="#4a90e2" />}
+                                    <IconContainer isUser={message.sender}>
+                                        {message.isUser ? <UserRound size={18} color="#000" /> : <Bot size={18} color="#4a90e2" />}
                                     </IconContainer>
-                                    <Message isUser={message.isUser}>{message.text}</Message>
+                                    <Message isUser={message.sender}>{message.text}</Message>
                                 </MessageContainer>
                             ))}
                             {isLoading && (
