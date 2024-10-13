@@ -32,10 +32,10 @@ function App() {
               <Route path='/problems/:problemName/:problemId' element={<ProblemPage />}></Route>
               <Route path="/pro-features" element={<ProFeatures />} />
               <Route path='/login' element={<Login />}></Route>
-              <Route path='/about' element={<ComingSoonPage />}></Route>
+              <Route path='/about' element={<About />}></Route>
               <Route path='/activities' element={<RecentActivities/>}></Route>
               <Route path='/leaderboard' element={<ComingSoonPage />}></Route>
-              <Route path='/profile' element={<Profile />}></Route>
+              <Route path='/profile' element={<ComingSoonPage />}></Route>
             </Routes>
           </Suspense>
         </BrowserRouter>
