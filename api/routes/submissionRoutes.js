@@ -7,6 +7,6 @@ router.post('/submit',submissionController.createSubmission);
 router.get('/submit/:id', submissionController.getSubmissionById);
 router.post('/analyze', submissionController.analyzeSubmission);
 router.get('/solved', auth.checkJwt ,submissionController.getSolvedProblems);
-router.get('/recent', auth.checkJwt, submissionController.getLatestSubmissions);
+router.get('/recent', submissionController.getLatestSubmissions);
 
 module.exports = router
