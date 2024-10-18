@@ -1,141 +1,113 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { useAuth0 } from '@auth0/auth0-react'
 import { CheckCircle, Clock, XCircle } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import Navbar from '../components/Navbar'
 const api = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL
-  })
+  baseURL: import.meta.env.VITE_BASE_URL
+})
 
 const PageContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
+  padding: 2rem;
 `
 
-const Title = styled.h1`
-  font-size: 28px;
-  color: #333;
-  margin-bottom: 20px;
+const ActivityList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `
 
-const ActivityList = styled.ul`
-  list-style: none;
-  padding: 0;
-`
-
-const ActivityItem = styled.li`
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-  margin-bottom: 16px;
+const SubmissionInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: transform 0.2s ease-in-out;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
 `
 
-const ProblemInfo = styled.div`
-  flex: 1;
-`
-
-const ProblemName = styled.h2`
-  font-size: 18px;
-  color: #4a4a4a;
-  margin: 0 0 8px 0;
-`
-
-const SubmitterName = styled.p`
-  font-size: 14px;
-  color: #888;
-  margin: 0;
-`
-
-const StatusBadge = styled.span`
-  background-color: ${props => props.status === 'ACCEPTED' ? '#4caf50' : '#f44336'};
-  color: white;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
+const StatusBadge = styled(Badge)`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 4px;
 `
 
-const SubmissionTime = styled.span`
-  font-size: 14px;
-  color: #888;
+const Timestamp = styled.span`
   display: flex;
   align-items: center;
-  margin-left: 0.6rem;
-  gap: 4px;
+  gap: 0.25rem;
+  color: #666;
+  font-size: 0.875rem;
 `
 
 const RecentActivities = () => {
-    const [submissions, setSubmissions] = useState([]);
-    const { getAccessTokenSilently } = useAuth0();
+  const [submissions, setSubmissions] = useState([]);
+  // const { getAccessTokenSilently } = useAuth0();
 
-    useEffect(() => {
-        const fetchSubmissions = async () => {
-            try {
-                const token = await getAccessTokenSilently();
-                console.log('token', token);
-                const response = await api.get(`/api/submissions/recent`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setSubmissions(response.data);
-            } catch (error) {
-                console.error('Error fetching submissions:', error);
-            }
-        };
-
-        fetchSubmissions();
-    }, [getAccessTokenSilently]);
-
-    const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
+  useEffect(() => {
+    const fetchSubmissions = async () => {
+      try {
+        // const token = await getAccessTokenSilently();
+        // console.log('token', token);
+        const response = await api.get(`/api/submissions/recent`);
+        setSubmissions(response.data);
+      } catch (error) {
+        console.error('Error fetching submissions:', error);
+      }
     };
 
-    return (
-        <>
-            <Navbar/>
-            <PageContainer>
-                <Title>Recent Activity</Title>
-                <ActivityList>
-                    {submissions.map((submission) => (
-                        <ActivityItem key={submission._id}>
-                            <ProblemInfo>
-                                <ProblemName>{submission.problem.title}</ProblemName>
-                                <SubmitterName>Submitted by: {submission.user.name}</SubmitterName>
-                            </ProblemInfo>
-                            <StatusBadge status={submission.status}>
-                                {submission.status === 'ACCEPTED' ? (
-                                    <CheckCircle size={14} />
-                                ) : (
-                                    <XCircle size={14} />
-                                )}
-                                {submission.status}
-                            </StatusBadge>
-                            <SubmissionTime>
-                                <Clock size={14} />
-                                {formatDate(submission.createdAt)}
-                            </SubmissionTime>
-                        </ActivityItem>
-                    ))}
-                </ActivityList>
-            </PageContainer>
-        </>
-    )
+    fetchSubmissions();
+  }, []);
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  return (
+    <>
+      <Navbar />
+      <PageContainer>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">Recent Activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-[70vh]">
+              <ActivityList>
+                {submissions.map((submission) => (
+                  <Card key={submission.submissionId}>
+                    <CardContent className="p-4">
+                      <h3 className="text-lg font-semibold mb-2">{submission.problem.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-2">Submitted by: {submission.user.name}</p>
+                      <SubmissionInfo>
+                        <StatusBadge variant={submission.status === 'ACCEPTED' ? 'success' : 'destructive'}>
+                          {submission.status === 'ACCEPTED' ? (
+                            <CheckCircle size={14} />
+                          ) : (
+                            <XCircle size={14} />
+                          )}
+                          {submission.status}
+                        </StatusBadge>
+                        <Timestamp>
+                          <Clock size={14} />
+                          {formatDate(submission.createdAt)}
+                        </Timestamp>
+                      </SubmissionInfo>
+                    </CardContent>
+                  </Card>
+                ))}
+              </ActivityList>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      </PageContainer>
+    </>
+  )
 }
 
 export default RecentActivities

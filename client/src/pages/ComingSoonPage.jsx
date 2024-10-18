@@ -115,7 +115,7 @@ export default function ComingSoonPage() {
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
   useEffect(() => {
-    const targetDate = new Date('2024-10-10T00:00:00').getTime()
+    const targetDate = new Date('2024-10-28T00:00:00').getTime()
 
     const interval = setInterval(() => {
       const now = new Date().getTime()
