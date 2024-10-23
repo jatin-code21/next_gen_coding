@@ -99,7 +99,7 @@ const ProblemDetails = ({ problem }) => {
     return (
         <>
             <DetailContainer>
-                <Title>
+                <Title className='text-2xl font-extrabold tracking-tight lg:text-2xl'>
                     {problem.title}
                     <BulbContainer
                         onMouseEnter={() => setShowTooltip(true)}

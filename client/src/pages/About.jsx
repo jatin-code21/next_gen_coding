@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Rocket, Code, Users, FileText, Zap, Activity } from 'lucide-react'
+import { Rocket, Code, Users, FileText, Zap, Activity, Swords } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 
 const PageContainer = styled.div`
@@ -62,7 +62,7 @@ export default function AboutUs() {
           {[
             { icon: <Code size={24} />, title: "Real-Time Code Execution", description: "Write, run, and test your code with instant feedback using our fast, secure code editor powered by Judge0 API." },
             { icon: <Rocket size={24} />, title: "AI-Driven Features", description: "Get AI-generated test cases to test your solutions on various scenarios and improve your code quality." },
-            { icon: <Users size={24} />, title: "Collaboration", description: "Work with your peers in real-time on the same code editor, solving problems together as a team." },
+            { icon: <Swords size={24} />, title: "Battle", description: "Engage in thrilling code duels with peers, where collaboration meets competition in real-time problem-solving!" },
             { icon: <FileText size={24} />, title: "Code Report", description: "Get detailed insights after every successful submission to help you understand and optimize your solutions." },
             { icon: <Zap size={24} />, title: "Pro Mode", description: "Engage with our AI assistant for personalized support and discover where your coding skills can be applied in the real world." },
             { icon: <Activity size={24} />, title: "User Activity Tracking", description: "Monitor your progress and submissions, helping you stay on track." },

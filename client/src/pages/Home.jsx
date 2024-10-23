@@ -5,6 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from '../components/Navbar'
 import ProblemsToTry from '../components/ProblemsToTry'
 import Footer from '../components/Footer'
+import RoomButton from '@/components/RoomButton';
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
 })
@@ -44,6 +45,7 @@ export default function HomePage() {
   return (
     <Container>
       <Navbar />
+      <RoomButton/>
       <ProblemsToTry />
       <Footer />
     </Container>
