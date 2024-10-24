@@ -9,10 +9,10 @@ export const SocketProvider = ({ children }) => {
 
     const connectSocket = useCallback(() => {
         const newSocket = io(import.meta.env.VITE_BASE_URL, {
-            transports: ['websocket'],
+            transports: ['websocket', 'polling'],
             reconnection: true,
             reconnectionAttempts: Infinity,
-            reconnectionDelay: 1000,
+            reconnectionDelay: 1000,    
             autoConnect: false, // We'll manually connect
         });
 
