@@ -10,6 +10,7 @@ import { useSocket } from '@/hooks/SocketContext';
 import { Timer } from 'lucide-react'
 import { useAuth0 } from '@auth0/auth0-react';
 import BattleEndModal from '@/components/BattleEndModal';
+import useBattleStore from '@/store/battleStore';
 const api = axios.create({ baseURL: import.meta.env.VITE_BASE_URL });
 
 const PageContainer = styled.div`
@@ -86,14 +87,15 @@ export default function BattleRoom() {
     const [room, setRoom] = useState(null);
     const [questions, setQuestions] = useState([]);
     const [submissionData, setSubmissionData] = useState(null);
-    const [battleStartTime, setBattleStartTime] = useState(null);
+    // const [battleStartTime, setBattleStartTime] = useState(null);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [timeleft, setTimeLeft] = useState(5 * 60); // intial time 5 minutes
+    // const [timeleft, setTimeLeft] = useState(5 * 60); // intial time 5 minutes
     const [battleResult, setBattleResult] = useState(null);
     const { getAccessTokenSilently } = useAuth0();
     const { socket, isConnected, reconnect } = useSocket();
     const [showEndModal, setShowEndModal] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { timeleft, setTimeLeft, setBattleStartTime, battleStartTime, startTimer, resetBattleStore } = useBattleStore();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -128,6 +130,7 @@ export default function BattleRoom() {
             setShowEndModal(true);
             localStorage.removeItem(`battleQuestions_${roomId}`);
             localStorage.removeItem(`battleStartTime_${roomId}`);
+            resetBattleStore();
             setTimeout(() => { navigate('/') }, 5000); // Redirect to home page after 5 seconds
         })
 
@@ -173,21 +176,29 @@ export default function BattleRoom() {
     }, [roomId, getAccessTokenSilently, questions.length, battleStartTime]);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            if (battleStartTime) {
-                const now = Date.now();
-                const elapsed = Math.floor((now - battleStartTime) / 1000);
-                const remaining = Math.max(5 * 60 - elapsed, 0);
-                setTimeLeft(remaining);
+        if (battleStartTime) {
+            const intervalId = startTimer();
+            return () => clearInterval(intervalId);
+        }
+    }, [battleStartTime, startTimer]);
 
-                if (remaining === 0) {
-                    clearInterval(timer);
-                }
-            }
-        }, 1000);
 
-        return () => clearInterval(timer);
-    }, [battleStartTime]);
+    // useEffect(() => {
+    //     const timer = setInterval(() => {
+    //         if (battleStartTime) {
+    //             const now = Date.now();
+    //             const elapsed = Math.floor((now - battleStartTime) / 1000);
+    //             const remaining = Math.max(5 * 60 - elapsed, 0);
+    //             setTimeLeft(remaining);
+
+    //             if (remaining === 0) {
+    //                 clearInterval(timer);
+    //             }
+    //         }
+    //     }, 1000);
+
+    //     return () => clearInterval(timer);
+    // }, [battleStartTime, startTimer]);
 
     const formatTime = (time) => {
         return `${Math.floor(time / 60)}:${time % 60}`; // minutes:seconds

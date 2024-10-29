@@ -30,7 +30,7 @@ const RoomButton = () => {
             navigate(`/battle/${roomId}`);
         } catch (error) {
             console.error('Error creating room', error);
-            alert('Failed to create room');
+            alert('Failed to create Room. Please ensure you are logged in');
         }
     }
 
@@ -42,7 +42,7 @@ const RoomButton = () => {
             navigate(`/battle/${roomId}`);
         } catch (error) {
             console.error('Error joining room', error);
-            alert('Failed to join room');
+            alert('Failed to join room. Please ensure you are logged in');
         }
     }
 

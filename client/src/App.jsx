@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx'
 import ProblemsList1 from './pages/ProblemsList1.jsx'
 import BattlePage from './pages/BattlePage.jsx'
 import BattleProblemPage from './pages/BattleProblemPage.jsx'
+import BattleLayout from './components/BattleLayout.jsx'
 import { SocketProvider } from './hooks/SocketContext.jsx'
 
 const Home = lazy(() => import('./pages/Home.jsx'))
@@ -40,8 +41,12 @@ function App() {
               <Route path='/activities' element={<RecentActivities />}></Route>
               <Route path='/leaderboard' element={<ComingSoonPage />}></Route>
               <Route path='/profile' element={<ComingSoonPage />}></Route>
-              <Route path='/battle/:roomId' element={<BattleDashboard />}></Route>
-              <Route path='/battle/:roomId/:problemName/:problemId' element={<BattleProblemPage />}></Route>
+              <Route path="/battle" element={<BattleLayout />}>
+                <Route path=":roomId" element={<BattleDashboard />} />
+                <Route path=":roomId/:problemName/:problemId" element={<BattleProblemPage />} />
+              </Route>
+              {/* <Route path='/battle/:roomId' element={<BattleDashboard />}></Route>
+              <Route path='/battle/:roomId/:problemName/:problemId' element={<BattleProblemPage />}></Route> */}
             </Routes>
           </Suspense>
         </BrowserRouter>

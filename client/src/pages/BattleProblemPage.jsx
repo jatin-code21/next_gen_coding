@@ -20,7 +20,8 @@ import AIChatAssistant from '../components/AIChatAssistant';
 import { set } from 'mongoose';
 import { useSocket } from '@/hooks/SocketContext';
 import BattleEndModal from '@/components/BattleEndModal';
-
+import useBattleStore from '@/store/battleStore';
+import { Timer } from 'lucide-react';
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -85,6 +86,15 @@ const TabContent = styled.div`
   background-color: #fff;
 `;
 
+const TimerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 1rem;
+`
+
 const BattleProblemPage = () => {
     const { getAccessTokenSilently } = useAuth0();
     const { problemId, roomId } = useParams();
@@ -99,11 +109,16 @@ const BattleProblemPage = () => {
     const [isProMode] = useProMode();
     const { socket, isConnected, reconnect } = useSocket();
     const [showEndModal, setShowEndModal] = useState(false);
+    const { timeleft } = useBattleStore();
     const navigate = useNavigate();
 
     console.log('Problem id is:', problemId);
 
     const { user, isAuthenticated } = useAuth0();
+
+    const formatTime = (time) => {
+        return `${Math.floor(time / 60)}:${time % 60 < 10 ? '0' : ''}${time % 60}`;
+    };
 
     const handleBattleEnd = useCallback((data) => {
         console.log('Battle ended:', data);
@@ -338,6 +353,10 @@ const BattleProblemPage = () => {
     return (
         <>
             <Navbar />
+            <TimerContainer>
+                <Timer size={24} />
+                Time Remaining: {formatTime(timeleft)}
+            </TimerContainer>
             <PageContainer>
                 <LeftPanel>
                     <ProblemDetails problem={problem} />
